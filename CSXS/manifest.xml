@@ -44,8 +44,8 @@
 				<Menu>StatTracker</Menu>
 				<Geometry>
 					<Size>
-						<Height>310</Height>
-						<Width>250</Width>
+						<Height>50</Height>
+						<Width>100</Width>
 					</Size>
 				</Geometry>
 			</UI>
