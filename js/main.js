@@ -21,7 +21,7 @@ var interface = new CSInterface();
 	}
 
 	//block ae from using ALL keys while this window is active
-	keyRegisterOverride();
+	//keyRegisterOverride();
 
 	// alert(path.slice(60, path.length));
 
@@ -152,30 +152,35 @@ function getOS() {
 	return os;
 }
 
-//disables ae keybinds while extension is active
-//from https://justintaylor.tv/hotkeys-in-cep/
-// to target specific keys get the key codes from
-//https://css-tricks.com/snippets/javascript/javascript-keycodes/
-function keyRegisterOverride() {
-	const platform = navigator.platform.substring(0, 3);
-	let maxKey;
-	if (platform === 'Mac')
-		maxKey = 126; // Mac Max Key Code
-	else if (platform === 'Win')
-		maxKey = 222; // HTML Max Key Code
-	let allKeys = [];
-	for (let k = 0; k <= maxKey; k++) {
-		for (let j = 0; j <= 15; j++) {
-			const guide = (j >>> 0).toString(2).padStart(4, '0');
-			allKeys.push({
-				keyCode: k,
-				ctrlKey: guide[0] == 1,
-				altKey: guide[1] == 1,
-				shiftKey: guide[2] == 1,
-				metaKey: guide[3] == 1
-			});
-		}
+//increment the timer every second
+function incrementTimer() {
+	//get stuff from html
+	var time = $('stopwatch').innerText;
+	var tokens = time.split(":");
+	var hours = parseInt(tokens[0]);
+	var minutes = parseInt(tokens[1]);
+	var seconds = parseInt(tokens[2]);
+
+	//increment
+	seconds++;
+	if(seconds >= 60) {
+		seconds -= 60; minutes++;
 	}
-	const keyRes = interface.registerKeyEventsInterest(JSON.stringify(allKeys));
-	console.log('Key Events Registered Completed: ' + keyRes);
-};
+	if(minutes >= 60) {
+		minutes -= 60; hours++;
+	}
+
+	//fit to string formatting
+	if(seconds < 10) {
+		seconds = '0' + seconds.toString();
+	}
+	if(minutes < 10) {
+		minutes = '0' + minutes.toString();
+	}
+	
+	//return
+	var res = hours.toString() + ":" + minutes.toString() + ":" + seconds.toString();
+	$('stopwatch').innerText = res;
+	setTimeout(incrementTimer, 1000);
+}
+incrementTimer();
