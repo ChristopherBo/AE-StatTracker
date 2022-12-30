@@ -1,0 +1,261 @@
+@font-face {
+    font-family: "Montserrat";
+    font-weight: 400;
+    font-style: normal;
+    src: url("Montserrat-Regular.ttf") format('truetype');
+}
+
+* {
+	font-family: system-ui, Ubuntu, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+	font-size: 12px;
+	background-color: #232323;
+	color:#D7D7D7;
+}
+
+html {
+	overflow-x: hidden;
+	overflow-y: hidden;
+	height:100%;
+}
+
+body {
+	overflow-y: hidden;
+	overflow-x: hidden;
+	height:100%;
+}
+
+p {
+	margin-block-start: 3px;
+	margin-block-end: 5px;
+}
+
+hr {
+	border-style: solid;
+	border-width: 1px;
+	border-color: #313131;
+	margin-block-start: 0.5em;
+    margin-block-end: 0.6em;
+}
+
+h1 {
+	font-size: 2em;
+	text-align: center;
+	margin-top: 0px;
+	margin-bottom: 0px;
+}
+
+table {
+	font-family: arial, sans-serif;
+	border-collapse: collapse;
+	width: 100%;
+}
+
+td, th {
+	border: 1px solid #dddddd;
+	text-align: left;
+	padding: 8px;
+}
+  
+tr:nth-child(even) {
+	background-color: #424242;
+}
+
+input[type=text] {
+	background-color: #232323;
+	text-align: center;
+	align-self: left;
+	width: 75px;
+	color:#D7D7D7;
+	border-color:#D7D7D7;
+	border-radius: 4px;
+	border-width: 1px;
+	border-style: solid;
+	height:14px;
+	margin-top: 0px;
+	margin-bottom: 2px;
+}
+
+/* gets rid of the blue outline when selecting a text box */
+/* from https://stackoverflow.com/questions/17097512/how-can-i-change-the-border-outline-color-for-input-and-textarea-elements-in-twi */
+textarea:focus, input:focus, input[type]:focus, .uneditable-input:focus {   
+    border-color:#D7D7D7;
+    box-shadow: 0 0px 0px rgba(229, 103, 23, 0.075) inset, 0 0 0px rgba(229, 103, 23, 0.6);
+    outline: 0 none;
+}
+
+
+input[type="checkbox"] {
+	accent-color: red;
+}
+
+/* checkbox shit from w3cschools modded by me */
+/* The container */
+.container {
+	display: block;
+	position: relative;
+	padding-left: 25px;
+	margin-top: 5px;
+	height:20px;
+	/* margin-bottom: 10px; */
+	cursor: pointer;
+	/* font-size: 22px; */
+	-webkit-user-select: none;
+	-moz-user-select: none;
+	-ms-user-select: none;
+	user-select: none;
+	text-align: left;
+	/* font-size: 14px; */
+}
+
+.container[id="bindcontainer"] {
+	margin-bottom:5px;
+}
+
+/* hide default checkbox */
+.container input {
+	position: absolute;
+	opacity: 0;
+	cursor: pointer;
+	height: 0;
+	width: 0;
+}
+
+/* Create a custom checkbox */
+.checkmark {
+	position: absolute;
+	top: 0;
+	left: 2px;
+	height: 15px;
+	width: 15px;
+	background-color: #232323;
+	color:#D7D7D7;
+	border-radius: 3px;
+	border-style: solid;
+	border-width:2px;
+}
+
+/* On mouse-over, add a grey background color */
+.container:hover input ~ .checkmark {
+	border-color: #B9B9B9;
+	background-color: #232323;
+}
+
+/* When the checkbox is checked, add a blue background 232323*/
+.container input:checked ~ .checkmark {
+	background-color: #D7D7D7;
+}
+
+/* Create the checkmark/indicator (hidden when not checked) */
+.checkmark:after {
+	content: "";
+	position: absolute;
+	display: none;
+}
+
+/* Show the checkmark when checked */
+.container input:checked ~ .checkmark:after {
+	display: block;
+}
+
+/* Style the checkmark/indicator */
+.container .checkmark:after {
+	left: 4px;
+	top: 0px;
+	width: 4px;
+	height: 10px;
+	border: solid #232323;
+	border-width: 0 3px 3px 0;
+	-webkit-transform: rotate(45deg);
+	-ms-transform: rotate(45deg);
+	transform: rotate(45deg);
+}
+/* end of w3schools stuff */
+
+#binds {
+	text-align: left;
+	color: #D7D7D7;
+}
+
+#color-picker {
+	background-color: #232323;
+	color:#D7D7D7;
+}
+
+/* #logoSection {
+	width: 400px;
+	height: 225px;
+} */
+
+#buttonHolder {
+	/* width:250px;
+	height:310px; */
+	/* height:70%; */
+	text-align: center;
+	border-style: none;
+	border-width: 0px;
+	border-color: #707070;
+	color:#D7D7D7;
+}
+
+#previewSection {
+	/* width: 400px;
+	height: 355px; */
+	display: inline-block;
+	color: #D7D7D7;
+}
+
+button {
+	margin-top:2px;
+	margin-bottom:2px;
+	background-color: #232323;
+	opacity: 1;
+	font-size: 18px;
+	color:#D7D7D7;
+	border-radius: 10px;
+	border-color:#D7D7D7;
+	border-width: 1px;
+	border-style: solid;
+	padding: 0px 10px;
+}
+
+button:hover {
+	cursor:pointer;
+	background-color: #D7D7D7;
+	color:#232323;
+	border-color:#D7D7D7;
+	border-width: 1px;
+}
+
+/* Let's get this party started */
+::-webkit-scrollbar {
+    width: 13px;
+    opacity: 0;
+}
+ 
+
+::-webkit-scrollbar-track {
+opacity: 0;
+}
+ 
+
+::-webkit-scrollbar-thumb {
+    background: rgba(17, 17, 17, 1); 
+    opacity: 0;
+}
+
+::-webkit-scrollbar-button {
+	height: 10px;
+	width: 13px;
+	background: rgba(70, 70, 70, 1); 
+	opacity: 0;
+}
+
+::-webkit-scrollbar-button:vertical:increment {
+	width: 13px;
+	opacity: 0;
+}
+
+::-webkit-scrollbar-button:vertical:decrement {
+	width: 13px;
+	opacity: 0;
+}
