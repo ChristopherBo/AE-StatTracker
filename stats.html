@@ -48,50 +48,32 @@
 		<li><a href="preferences.html">Preferences</a></li>
 	</ul>
 
-	<div id="buttonHolder">
-		<button id="setup-button setup-button--enabled" onclick="setupClick()">Setup</button>
-		<button id="next-button next-button--enabled" onclick="nextClick()">Next</button>
-		<br id="button-separator">
-		<button id="back-button" onclick="backClick()">Back</button>
-		<button id="forward-button" onclick="forwardClick()">Forward</button>
-		<button id="keyframe-button" onclick="keyframeClick()">Keyframe</button>
-		<br>
-
-		<label class="container">
-			<input type="checkbox" id="twixtor-checkbox" name="twixtor-checkbox" checked="checked" onchange="toggleCheckbox(event)">
-			<span class="checkmark"></span>
-			<label for="twixtor-checkbox">Add Twixtor to completed comps</label>
-		</label>
-		<label class="container">
-			<input type="checkbox" id="renderqueue-checkbox" name="renderqueue-checkbox" onchange="toggleCheckbox(event)">
-			<span class="checkmark"></span>
-			<label for="renderqueue-checkbox">Send completed comps to render queue</label>
-		</label>
-		<hr>
-		<label class="container" id="bindcontainer">
-			<input type="checkbox" id="custombinds-checkbox" name="custombinds-checkbox" checked="checked" onchange="toggleBinds(event);toggleCheckbox(event)">
-			<span class="checkmark"></span>
-			<label for="custombinds-checkbox"><a href="./binds.html">Enable custom binds?</a></label>
-		</label>
-		<div id="binds">
-			<input type="text" id="back-bind" value="PageUp" onchange="changeBackward(event)"/>
-			<label for="back-bind">Back 1 Frame</label>
-			<br>
-			<input type="text" id="forward-bind" value="PageDown" onchange="changeForward(event)"/>
-			<label for="back-bind">Forward 1 Frame</label>
-			<br>
-			<input type="text" id="keyframe-bind" value="/" onchange="changeKeyframe(event)"/>
-			<label for="back-bind">Add/Remove Keyframe</label>
-			<br>
-			<input type="text" id="next-bind" value="*" onchange="changeClip(event)"/>
-			<label for="next-bind">Next Clip</label>
-		</div>
-	</div>
-	<hr>
-	<div id="previewSection">
-		<p>Status: <span id="status">N/A</span></p>
-		Color: <input value="#232323" id="color-picker" onchange="changeTheme(event)" data-jscolor="{value:'#232323'}" style="width: 70px; border-radius:5px; border-style:solid; border-width: 1px;">
-	</div>
+	<table>
+		<tr>
+			<td>Time spent on current project file</td>
+			<td>0:00:00</td>
+		</tr>
+		<tr>
+			<td>Time spent in total</td>
+			<td>0:00:00</td>
+		</tr>
+		<tr>
+			<td>Adjustment layers</td>
+			<td>0</td>
+		</tr>
+		<tr>
+			<td>Precomps</td>
+			<td>0</td>
+		</tr>
+		<tr>
+			<td>Layers</td>
+			<td>0</td>
+		</tr>
+		<tr>
+			<td>Effects</td>
+			<td>0</td>
+		</tr>
+	</table>
 	<script>
 
 		function getOS() {
@@ -111,6 +93,6 @@
 		
 	</script>	
 	<script src="js/libs/CSInterface.js"></script>
-	<script src="js/main.js"></script>
+	<script src="js/stats.js"></script>
 	</body>
 </html>
