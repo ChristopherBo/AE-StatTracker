@@ -22,6 +22,7 @@ body {
 	overflow-y: hidden;
 	overflow-x: hidden;
 	height:100%;
+	margin:0;
 }
 
 p {
@@ -224,6 +225,37 @@ button:hover {
 	color:#232323;
 	border-color:#D7D7D7;
 	border-width: 1px;
+}
+
+.topnav {
+	overflow: hidden;
+	margin:auto;
+	display:inline-block;
+    list-style:none;
+    margin:0;
+    padding:0;
+    text-align:center;
+	width:100%;
+}
+  
+.topnav a {
+	float: none;
+	color: #f2f2f2;
+	text-align: center;
+	padding: 4px 0px;
+	text-decoration: none;
+	font-size: 15px;
+	display:inline-block;
+	width:248px;
+}
+
+.topnav li {
+	display:inline-block;
+}
+  
+.topnav li.active, .topnav a.active {
+	background-color: #454545;
+	color: white;
 }
 
 /* Let's get this party started */
