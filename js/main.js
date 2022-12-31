@@ -1,3 +1,7 @@
+const fs = require('fs'); //for file writing later
+var statsFilePath = null;
+var currentFilename = null;
+
 //nice shortcut functions
 function $(id) {
     return document.getElementById(id);
@@ -19,6 +23,10 @@ var interface = new CSInterface();
 		slash = "/";
 		path = path.substring(8, path.length - 11);
 	}
+
+	//find and set statsfilepath
+	var home = require("os").homedir();
+	statsFilePath = home + '/Documents/stats.txt';
 
 	//block ae from using ALL keys while this window is active
 	//keyRegisterOverride();
@@ -192,30 +200,55 @@ function incrementTimer() {
 
 function saveTimer(timer) {
 	//read existing files contents
-	// var rawFile = new XMLHttpRequest();
-    // rawFile.open("GET", document.location.href.replace("index.html", "stats.txt"), false);
-    // rawFile.onreadystatechange = function ()
-    // {
-    //     if(rawFile.readyState === 4)
-    //     {
-    //         if(rawFile.status === 200 || rawFile.status == 0)
-    //         {
-    //             var allText = rawFile.responseText;
-    //             alert(allText);
-    //         }
-    //     }
-    // }
-    // rawFile.send(null);
-	writeFile( document.location.pathname.replaceAll("%20", " ").replace("index.html", "stats.txt"), null, timer);
+	fs.readFile(statsFilePath, (error, data) => {
+		if(error) {
+			throw error;
+		}
+		var lines = data.toString().split("\n");
+		var foundFile = false;
+		//find existing entry
+		for(var i=0; i < lines.length; i++) {
+			//currentFilename = getCurrentFilename(); //ie script testing.aep
+			//alert("filename: " + currentFilename);
+			if(currentFilename == lines[i].split(",")[0]) {
+				foundFile = true;
+				// alert(data.toString().replace(new RegExp(`${currentFilename},.*`, 'g'), "gaming"));
+				// sleep(2000);
+				fs.writeFile(statsFilePath, data.toString().replace(new RegExp(`${currentFilename},.*`, 'g'), currentFilename + "," + timer), err => {
+					if (err) {
+					  alert(err);
+					  return;
+					}
+					//file written successfully
+				});
+			}
+		}
+
+		if(foundFile == false) {
+			//if not found create entry for it
+			fs.appendFile(statsFilePath, currentFilename + "," + timer + "\n", err => {
+				if (err) {
+				  alert(err);
+				  return;
+				}
+				//file written successfully
+			});
+		}
+	});
+	//document.location.pathname.replaceAll("%20", " ").replace("index.html", "stats.txt")
 }
 incrementTimer();
 
-function writeToFile( path, mode, object ) {
-	var output = writeFile( path, mode, object );
-	return output;
+//get the current pf name every 5 seconds
+getCurrentFilename();
+function getCurrentFilename() {
+	interface.evalScript('getCurrentFilename()', function(res) {
+		//alert("res: " + res);
+		currentFilename = res;
+	});
+	setTimeout(getCurrentFilename, 5000);
 }
 
-// filePath = "C:\\users.xml";
-// isMode = null;
-// fileObject = userList;
-// writeToFile( filePath, isMode, fileObject );
+function sleep(ms) {
+    return new Promise(resolve => setTimeout(resolve, ms));
+}

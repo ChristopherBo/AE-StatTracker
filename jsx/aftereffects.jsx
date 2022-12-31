@@ -72,3 +72,14 @@ function checks() {
 
     return true;
 }
+
+
+function getCurrentFilename() {
+    //base checks before starting
+    var baseChecks = checks();
+    if(baseChecks != true) {
+        return false;
+    }
+    //alert(new File($.fileName).name);
+    return File.decode(app.project.file.name);
+}
