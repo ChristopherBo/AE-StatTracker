@@ -97,6 +97,11 @@ function toggleCheckbox(e) {
 }
 
 
+function statsClick() {
+	//alert("stats click");
+	interface.requestOpenExtension("com.ahr.stattracker.stats.panel");
+}
+
 function setupClick() {
 	//alert("setting up...");
 	interface.evalScript('setupEnv()', function(res) {
