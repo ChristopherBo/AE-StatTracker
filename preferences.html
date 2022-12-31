@@ -1,0 +1,116 @@
+<!doctype html>
+	<html>
+	<head>
+		<meta charset="utf-8">
+		<link rel="stylesheet" href="css/styles.css"/>
+		<script src="js/jscolor.js"></script>
+			<title>StatTracker</title>
+		<script>
+			var isNS = (navigator.appName == "Netscape") ? 1 : 0;
+
+			if(navigator.appName == "Netscape") document.captureEvents(Event.MOUSEDOWN||Event.MOUSEUP);
+
+			function mischandler(){
+				return false;
+			}
+
+			function mousehandler(e){
+				var myevent = (isNS) ? e : event;
+				var eventbutton = (isNS) ? myevent.which : myevent.button;
+				if((eventbutton==2)||(eventbutton==3)) {
+					return false;
+				}
+			}
+			document.oncontextmenu = mischandler;
+			document.onmousedown = mousehandler;
+			document.onmouseup = mousehandler;
+
+			// Here we can adjust defaults for all color pickers on page:
+			jscolor.presets.default = {
+				palette: [
+					'#000000', '#7d7d7d', '#870014', '#ec1c23', '#ff7e26', '#fef100', '#22b14b', '#00a1e7', '#3f47cc', '#a349a4',
+					'#ffffff', '#c3c3c3', '#b87957', '#feaec9', '#ffc80d', '#eee3af', '#b5e61d', '#99d9ea', '#7092be', '#c8bfe7',
+				],
+				//paletteCols: 12,
+				//hideOnPaletteClick: true,
+				//width: 271,
+				//height: 151,
+				//position: 'right',
+				//previewPosition: 'right',
+				//backgroundColor: 'rgba(51,51,51,1)', controlBorderColor: 'rgba(153,153,153,1)', buttonColor: 'rgba(240,240,240,1)',
+			}
+
+		</script>
+	</head>
+	<body scroll="no">
+	<ul class="topnav">
+		<li><a href="stats.html">Stats</a></li>
+		<li class="active"><a class="active" href="preferences.html">Preferences</a></li>
+	</ul>
+
+	<div id="buttonHolder">
+		<button id="setup-button setup-button--enabled" onclick="setupClick()">Setup</button>
+		<button id="next-button next-button--enabled" onclick="nextClick()">Next</button>
+		<br id="button-separator">
+		<button id="back-button" onclick="backClick()">Back</button>
+		<button id="forward-button" onclick="forwardClick()">Forward</button>
+		<button id="keyframe-button" onclick="keyframeClick()">Keyframe</button>
+		<br>
+
+		<label class="container">
+			<input type="checkbox" id="twixtor-checkbox" name="twixtor-checkbox" checked="checked" onchange="toggleCheckbox(event)">
+			<span class="checkmark"></span>
+			<label for="twixtor-checkbox">Add Twixtor to completed comps</label>
+		</label>
+		<label class="container">
+			<input type="checkbox" id="renderqueue-checkbox" name="renderqueue-checkbox" onchange="toggleCheckbox(event)">
+			<span class="checkmark"></span>
+			<label for="renderqueue-checkbox">Send completed comps to render queue</label>
+		</label>
+		<hr>
+		<label class="container" id="bindcontainer">
+			<input type="checkbox" id="custombinds-checkbox" name="custombinds-checkbox" checked="checked" onchange="toggleBinds(event);toggleCheckbox(event)">
+			<span class="checkmark"></span>
+			<label for="custombinds-checkbox"><a href="./binds.html">Enable custom binds?</a></label>
+		</label>
+		<div id="binds">
+			<input type="text" id="back-bind" value="PageUp" onchange="changeBackward(event)"/>
+			<label for="back-bind">Back 1 Frame</label>
+			<br>
+			<input type="text" id="forward-bind" value="PageDown" onchange="changeForward(event)"/>
+			<label for="back-bind">Forward 1 Frame</label>
+			<br>
+			<input type="text" id="keyframe-bind" value="/" onchange="changeKeyframe(event)"/>
+			<label for="back-bind">Add/Remove Keyframe</label>
+			<br>
+			<input type="text" id="next-bind" value="*" onchange="changeClip(event)"/>
+			<label for="next-bind">Next Clip</label>
+		</div>
+	</div>
+	<hr>
+	<div id="previewSection">
+		<p>Status: <span id="status">N/A</span></p>
+		Color: <input value="#232323" id="color-picker" onchange="changeTheme(event)" data-jscolor="{value:'#232323'}" style="width: 70px; border-radius:5px; border-style:solid; border-width: 1px;">
+	</div>
+	<script>
+
+		function getOS() {
+			var userAgent = window.navigator.userAgent,
+			platform = window.navigator.platform,
+			macosPlatforms = ['Macintosh', 'MacIntel', 'MacPPC', 'Mac68K'],
+			windowsPlatforms = ['Win32', 'Win64', 'Windows', 'WinCE'],
+			os = null;
+
+			if(macosPlatforms.indexOf(platform) != -1) {
+				os = "MAC";
+			} else if(windowsPlatforms.indexOf(platform) != -1) {
+				os = "WIN";
+			}
+			return os;
+		}
+		
+	</script>	
+	<script src="js/libs/CSInterface.js"></script>
+	<script src="js/main.js"></script>
+	</body>
+</html>
