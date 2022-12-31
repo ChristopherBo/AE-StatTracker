@@ -186,6 +186,25 @@ function incrementTimer() {
 	//return
 	var res = hours.toString() + ":" + minutes.toString() + ":" + seconds.toString();
 	$('stopwatch').innerText = res;
+	saveTimer(res);
 	setTimeout(incrementTimer, 1000);
 }
+
+function saveTimer(timer) {
+	var rawFile = new XMLHttpRequest();
+    rawFile.open("GET", document.location.href.replace("index.html", "stats.txt"), false);
+    rawFile.onreadystatechange = function ()
+    {
+        if(rawFile.readyState === 4)
+        {
+            if(rawFile.status === 200 || rawFile.status == 0)
+            {
+                var allText = rawFile.responseText;
+                alert(allText);
+            }
+        }
+    }
+    rawFile.send(null);
+}
+
 incrementTimer();
