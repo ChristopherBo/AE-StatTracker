@@ -41,7 +41,7 @@
 				<AutoVisible>true</AutoVisible>
 			</Lifecycle>
 			<UI>
-				<Type>Panel</Type>
+				<Type>Modeless</Type>
 				<Menu>Stats Panel</Menu>
 				<Geometry>
 					<Size>
