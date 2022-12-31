@@ -209,8 +209,7 @@ function saveTimer(timer) {
 		//find existing entry
 		for(var i=0; i < lines.length; i++) {
 			//currentFilename = getCurrentFilename(); //ie script testing.aep
-			//alert("filename: " + currentFilename);
-			if(currentFilename == lines[i].split(",")[0]) {
+			if(currentFilename == lines[i].split(",")[0] && currentFilename !== null) {
 				foundFile = true;
 				// alert(data.toString().replace(new RegExp(`${currentFilename},.*`, 'g'), "gaming"));
 				// sleep(2000);
@@ -224,7 +223,7 @@ function saveTimer(timer) {
 			}
 		}
 
-		if(foundFile == false) {
+		if(foundFile == false && currentFilename !== null) {
 			//if not found create entry for it
 			fs.appendFile(statsFilePath, currentFilename + "," + timer + "\n", err => {
 				if (err) {
