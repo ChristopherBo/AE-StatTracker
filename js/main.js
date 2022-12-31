@@ -146,10 +146,6 @@ function keyframeClick() {
 	});
 }
 
-// function goIntoJSX() {
-	
-// 	}
-
 function getOS() {
 	var userAgent = window.navigator.userAgent,
 	platform = window.navigator.platform,
@@ -220,6 +216,7 @@ function incrementTimer() {
 	setTimeout(incrementTimer, 1000);
 }
 
+//save the timer to stats file
 function saveTimer(timer) {
 	//read existing files contents
 	fs.readFile(statsFilePath, (error, data) => {
@@ -245,8 +242,8 @@ function saveTimer(timer) {
 			}
 		}
 
+		//if not found create entry for it
 		if(foundFile == false && currentFilename !== null) {
-			//if not found create entry for it
 			fs.appendFile(statsFilePath, currentFilename + "," + timer + "\n", err => {
 				if (err) {
 				  alert(err);
@@ -265,8 +262,4 @@ function getCurrentFilename() {
 		currentFilename = res;
 	});
 	setTimeout(getCurrentFilename, 5000);
-}
-
-function sleep(ms) {
-    return new Promise(resolve => setTimeout(resolve, ms));
 }
