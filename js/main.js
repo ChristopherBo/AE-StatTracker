@@ -191,20 +191,31 @@ function incrementTimer() {
 }
 
 function saveTimer(timer) {
-	var rawFile = new XMLHttpRequest();
-    rawFile.open("GET", document.location.href.replace("index.html", "stats.txt"), false);
-    rawFile.onreadystatechange = function ()
-    {
-        if(rawFile.readyState === 4)
-        {
-            if(rawFile.status === 200 || rawFile.status == 0)
-            {
-                var allText = rawFile.responseText;
-                alert(allText);
-            }
-        }
-    }
-    rawFile.send(null);
+	//read existing files contents
+	// var rawFile = new XMLHttpRequest();
+    // rawFile.open("GET", document.location.href.replace("index.html", "stats.txt"), false);
+    // rawFile.onreadystatechange = function ()
+    // {
+    //     if(rawFile.readyState === 4)
+    //     {
+    //         if(rawFile.status === 200 || rawFile.status == 0)
+    //         {
+    //             var allText = rawFile.responseText;
+    //             alert(allText);
+    //         }
+    //     }
+    // }
+    // rawFile.send(null);
+	writeFile( document.location.pathname.replaceAll("%20", " ").replace("index.html", "stats.txt"), null, timer);
+}
+incrementTimer();
+
+function writeToFile( path, mode, object ) {
+	var output = writeFile( path, mode, object );
+	return output;
 }
 
-incrementTimer();
+// filePath = "C:\\users.xml";
+// isMode = null;
+// fileObject = userList;
+// writeToFile( filePath, isMode, fileObject );
