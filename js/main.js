@@ -165,6 +165,28 @@ function getOS() {
 	return os;
 }
 
+//setup timer at start. make sure if pf was opened before we set timer to correct time
+function setTimer() {
+	//sleep(5000); //make sure timer actually gets setup first
+	fs.readFile(statsFilePath, (error, data) => {
+		if(error) {
+			throw error;
+		}
+		var lines = data.toString().split("\n");
+		//find existing entry
+		for(var i=0; i < lines.length; i++) {
+			//alert(lines[i].split(",")[0] + "," + currentFilename);
+			if(currentFilename == lines[i].split(",")[0]) {
+				$('stopwatch').innerText = lines[i].split(",")[1];
+				break;
+			}
+		}
+	});
+	incrementTimer();
+}
+getCurrentFilename();
+setTimeout(setTimer, 1000);
+
 //increment the timer every second
 function incrementTimer() {
 	//get stuff from html
@@ -234,12 +256,9 @@ function saveTimer(timer) {
 			});
 		}
 	});
-	//document.location.pathname.replaceAll("%20", " ").replace("index.html", "stats.txt")
 }
-incrementTimer();
 
 //get the current pf name every 5 seconds
-getCurrentFilename();
 function getCurrentFilename() {
 	interface.evalScript('getCurrentFilename()', function(res) {
 		//alert("res: " + res);
