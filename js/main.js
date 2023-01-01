@@ -199,7 +199,6 @@ setTimeout(setTimer, 1000);
 
 //increment the timer every second
 function incrementTimer() {
-	setTimer();
 	//get stuff from html
 	var time = $('stopwatch').innerText;
 	var tokens = time.split(":");
@@ -231,13 +230,41 @@ function incrementTimer() {
 	setTimeout(incrementTimer, 1000);
 }
 
+//increment the timer every second
+function incrementTimestamp(time) {
+	var tokens = time.split(":");
+	var hours = parseInt(tokens[0]);
+	var minutes = parseInt(tokens[1]);
+	var seconds = parseInt(tokens[2]);
+
+	//increment
+	seconds++;
+	if(seconds >= 60) {
+		seconds -= 60; minutes++;
+	}
+	if(minutes >= 60) {
+		minutes -= 60; hours++;
+	}
+
+	//fit to string formatting
+	if(seconds < 10) {
+		seconds = '0' + seconds.toString();
+	}
+	if(minutes < 10) {
+		minutes = '0' + minutes.toString();
+	}
+	
+	//return
+	var res = hours.toString() + ":" + minutes.toString() + ":" + seconds.toString();
+	return res;
+}
+
 //save the timer to stats file
 function saveTimer(timer) {
 	//read existing files contents
 	fs.readFile(statsFilePath, (error, data) => {
-		if(error) {
-			throw error;
-		}
+		if(error) { throw error; }
+
 		var lines = data.toString().split("\n");
 		var foundFile = false;
 		//find existing entry
@@ -247,12 +274,14 @@ function saveTimer(timer) {
 				foundFile = true;
 				// alert(data.toString().replace(new RegExp(`${currentFilename},.*`, 'g'), "gaming"));
 				// sleep(2000);
+				var time = lines[i].split(",")[1];
+				var incrementedTime = incrementTimestamp(time); //current time in file + 1 sec
+				if(timer != incrementedTime) {
+					$('stopwatch').innerText = incrementedTime;
+					timer = incrementTime;
+				}
 				fs.writeFile(statsFilePath, data.toString().replace(new RegExp(`${currentFilename},.*`, 'g'), currentFilename + "," + timer), err => {
-					if (err) {
-					  alert(err);
-					  return;
-					}
-					//file written successfully
+					if (err) { alert(err); return; }
 				});
 			}
 		}
@@ -261,11 +290,7 @@ function saveTimer(timer) {
 		if(foundFile == false && currentFilename !== null) {
 			$('stopwatch').innerText = "0:00:00";
 			fs.appendFile(statsFilePath, currentFilename + "," + timer + "\n", err => {
-				if (err) {
-				  alert(err);
-				  return;
-				}
-				//file written successfully
+				if (err) { alert(err); return; }
 			});
 		}
 	});
@@ -277,7 +302,6 @@ function getCurrentFilename() {
 		//alert("res: " + res);
 		if(currentFilename != res) {
 			currentFilename = res;
-			setTimer();
 		}
 	});
 	setTimeout(getCurrentFilename, 1000);
