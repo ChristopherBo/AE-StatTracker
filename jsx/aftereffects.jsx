@@ -350,3 +350,7 @@ function getRenderTime() {
     //alert("effect: " + res + ": " + fxDict[res]);
     return res;
 }
+
+function getAppVersion() {
+    return app.version.substring(0,4);
+}

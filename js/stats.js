@@ -77,6 +77,19 @@ var interface = new CSInterface();
 		$('render-time').innerText = res;
 	});
 
+	//get crash total
+	interface.evalScript('getAppVersion()', function(res) {
+		//alert("adj layers: " + res);
+		var crashFilePath = home + '/AppData/Roaming/Adobe/After Effects/' + res + '/logs';
+		alert(crashFilePath);
+		fs.readdir(crashFilePath, (err, files) => {
+			alert(files.length);
+			$('crash-total').innerText = files.length;
+		});
+		
+	});
+	
+
 	//block ae from using ALL keys while this window is active
 	//keyRegisterOverride();
 
