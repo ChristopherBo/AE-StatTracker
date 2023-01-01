@@ -284,3 +284,45 @@ function getNumberFiles() {
     //alert("adj layerss: " + res);
     return res;
 }
+
+//finds most used effect in project file
+function getPopularEffect() {
+    var res = 0;
+    var fxDict = {};
+    var items = app.project.items;
+    for(var i=1; i < items.length+1; i++) {
+        if(items[i] instanceof CompItem) {
+            //alert("found comp " + items[i].name);
+            var comp = items[i];
+            //iterate over all layers
+            for(var j=1; j < comp.layers.length+1; j++) {
+                //all fx on layer
+                //can't iterate over fx on a layer so we have to try indices until it breaks
+                var fx = true;
+                var l=1;
+                //iterate over all fx on layer
+                while(fx) {
+                    try {
+                        var effect = comp.layer(j).Effects(l);
+                        if(effect.matchName != "Channel Info") {
+                            //if exists bump it
+                            if(fxDict[effect.matchName] != undefined || fxDict[effect.matchName] != null) {
+                                fxDict[effect.matchName]++;
+                            } else {
+                                fxDict[effect.matchName] = 1;
+                            }
+                            if(res == 0 || fxDict[effect.matchName] > fxDict[res]) {
+                                res = effect.matchName;
+                            }
+                        }
+                        l++;
+                    } catch(error) {
+                        fx = false; //leave while loop
+                    }
+                }
+            }
+        }
+    }
+    //alert("effect: " + res + ": " + fxDict[res]);
+    return res;
+}

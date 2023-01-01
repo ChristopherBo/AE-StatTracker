@@ -67,6 +67,11 @@ var interface = new CSInterface();
 		$('file-total').innerText = res;
 	});
 
+	interface.evalScript('getPopularEffect()', function(res) {
+		//alert("adj layers: " + res);
+		$('popular-effect').innerText = res;
+	});
+
 	//block ae from using ALL keys while this window is active
 	//keyRegisterOverride();
 
