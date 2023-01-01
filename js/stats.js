@@ -169,21 +169,27 @@ function readTimer() {
 			throw error;
 		}
 		var lines = data.toString().split("\n");
-		var total = 0;
+		var total = "00:00:00";
 		//find existing entry
 		for(var i=0; i < lines.length; i++) {
-			//alert(lines[i].split(",")[0] + "," + currentFilename);
-			if(currentFilename == lines[i].split(",")[0]) {
-				$('time-currentPF').innerText = lines[i].split(",")[1];
+			if(lines[i] != "") {
+				if(lines[i].split(",")[0] !== undefined) {
+					//alert(lines[i].split(",")[0] + "," + currentFilename);
+					if(currentFilename == lines[i].split(",")[0]) {
+						$('time-currentPF').innerText = lines[i].split(",")[1];
+					}
+					//alert("adding " + lines[i].split(",")[1] + " to total");
+					total = addTimestamps(total, lines[i].split(",")[1]);
+					//alert("total: " + total);
+				}
 			}
-			total += parseInt(lines[i].split(",")[1]);
 		}
 
-		$('time-total').innerText = total.toString();
+		$('time-total').innerText = total;
 	});
 }
 getCurrentFilename();
-setTimeout(setTimer, 1000);
+setTimeout(readTimer, 1000);
 
 //get the current pf name every 5 seconds
 function getCurrentFilename() {
@@ -192,4 +198,48 @@ function getCurrentFilename() {
 		currentFilename = res;
 	});
 	setTimeout(getCurrentFilename, 5000);
+}
+
+//add two timecode times
+function addTimestamps(time1, time2) {
+	if(time1 == "00:00:00") {
+		return time2;
+	}
+	//break down timestamps
+	var tokens1 = time1.split(":");
+	var hours1 = parseInt(tokens1[0]);
+	var minutes1 = parseInt(tokens1[1]);
+	var seconds1 = parseInt(tokens1[2]);
+
+	var tokens2 = time2.split(":");
+	var hours2 = parseInt(tokens2[0]);
+	var minutes2 = parseInt(tokens2[1]);
+	var seconds2 = parseInt(tokens2[2]);
+
+	var hours = 0;
+	var minutes = 0;
+	var seconds = 0;
+
+	//increment
+	seconds = seconds1 + seconds2;
+	if(seconds >= 60) {
+		seconds -= 60; minutes++;
+	}
+	minutes += minutes1 + minutes2;
+	if(minutes >= 60) {
+		minutes -= 60; hours++;
+	}
+	hours += hours1 + hours2;
+
+	//fit to string formatting
+	if(seconds < 10) {
+		seconds = '0' + seconds.toString();
+	}
+	if(minutes < 10) {
+		minutes = '0' + minutes.toString();
+	}
+	
+	//return
+	var res = hours.toString() + ":" + minutes.toString() + ":" + seconds.toString();
+	return res;
 }
