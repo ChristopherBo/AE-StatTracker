@@ -52,6 +52,11 @@ var interface = new CSInterface();
 		$('effects-total').innerText = res;
 	});
 
+	interface.evalScript('getNumberKeyframes()', function(res) {
+		//alert("adj layers: " + res);
+		$('keyframes-total').innerText = res;
+	});
+
 	interface.evalScript('getNumberUnusedFiles()', function(res) {
 		//alert("adj layers: " + res);
 		$('unused-file-total').innerText = res;

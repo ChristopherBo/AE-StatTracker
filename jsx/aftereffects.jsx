@@ -160,6 +160,123 @@ function getNumberEffects() {
     return res;
 }
 
+//finds # of layers used
+function getNumberKeyframes() {
+    var res = 0;
+    var items = app.project.items;
+    for(var i=1; i < items.length+1; i++) {
+        if(items[i] instanceof CompItem) {
+            //alert("found comp " + items[i].name);
+            var comp = items[i];
+            //iterate over all layers
+            for(var j=1; j < comp.layers.length+1; j++) {
+                //all fx on layer
+                //can't iterate over fx on a layer so we have to try indices until it breaks
+                var fx = true;
+                var l=1;
+                //iterate over all fx on layer
+                while(fx) {
+                    try {
+                        var effect = comp.layer(j).Effects(l);
+                        var effects = true;
+                        var m=1;
+                        //iterate over all props in the effect
+                        while(effects) {
+                            try {
+                                if(effect.property(m).numKeys != undefined && effect.property(m).numKeys != null) {
+                                    res += effect.property(m).numKeys;
+                                }
+                                m++;
+                            } catch(error) {
+                                effects = false;
+                            }
+                            //iterate over any subgroups in the effect
+                            if(effect.property(m) instanceof PropertyGroup) {
+                                var subEffect = effect.property(m);
+                                var subfx = true;
+                                var k=1;
+                                while(subfx) {
+                                    try {
+                                        if(subEffect.property(k).numKeys != undefined && subEffect.property(k).numKeys != null) {
+                                            res += subEffect.property(k).numKeys;
+                                        }
+                                        k++;
+                                    } catch (error) {
+                                        subfx = false;
+                                    }
+                                }
+                            }
+                        }
+                        l++;
+                    } catch(error) {
+                        fx = false; //leave while loop
+                    }
+                }
+            }
+
+            //iterate over all layers again
+            for(var j=1; j < comp.layers.length+1; j++) {
+                //can't iterate over props on a layer so we have to try indices until it breaks
+                var fx = true;
+                var l=1;
+                //iterate over all properties on layer
+                while(fx) {
+                    try {
+                        var prop = comp.layer(j).property(l);
+                        var props = true;
+                        //add
+                        try {
+                            if(prop.numKeys != undefined && prop.numKeys != null) {
+                                res += prop.numKeys;
+                            }
+                        } catch(error) {
+                            props = false;
+                        }
+                        //iterate over any subgroups in the prop ie transform
+                        if(prop instanceof PropertyGroup && prop.name != "Effects" && prop.numProperties != 0) {
+                            var subProp = prop;
+                            var subfx = true;
+                            var k=1;
+                            while(subfx) {
+                                try {
+                                    if(subProp.property(k).numKeys != undefined && subProp.property(k).numKeys != null) {
+                                        res += subProp.property(k).numKeys;
+                                    }
+                                } catch (error) {
+                                    subfx = false;
+                                }
+                                //iterate over any subsubgroups in the prop ie transform
+                                if(subProp.property(k) instanceof PropertyGroup && subProp.property(k).name != "Effects" && subProp.property(k).numProperties != 0) {
+                                    var subsubProp = subProp.property(k);
+                                    var subsubfx = true;
+                                    var m=1;
+                                    while(subsubfx) {
+                                        try {
+                                            if(subsubProp.property(m).numKeys != undefined && subsubProp.property(m).numKeys != null) {
+                                                res += subsubProp.property(m).numKeys;
+                                            }
+                                        } catch (error) {
+                                            subsubfx = false;
+                                        }
+                                        m++;
+                                    }
+                                }
+                                k++;
+                            }
+                        }
+                        l++;
+                    } catch(error) {
+                        fx = false; //leave while loop
+                    }
+                }
+            }
+            //alert(comp.name + "\nkfs: " + res);
+        }
+    }
+    //alert("kfs total: " + res);
+    return res;
+}
+
 //finds # of files in project
 function getNumberUnusedFiles() {
     var files = [];
