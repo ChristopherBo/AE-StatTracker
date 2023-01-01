@@ -159,3 +159,43 @@ function getNumberEffects() {
     //alert("adj layerss: " + res);
     return res;
 }
+
+//finds # of files in project
+function getNumberUnusedFiles() {
+    var files = [];
+    var items = app.project.items;
+    //get a list of all files in pf
+    for(var i=1; i < items.length+1; i++) {
+        if(items[i] instanceof FootageItem) {
+            files.push(items[i]);
+        }
+    }
+
+    //if a file appears in a comp, remove it from list
+    for(var i=1; i < items.length+1; i++) {
+        if(items[i] instanceof CompItem) {
+            //alert("found comp " + items[i].name);
+            var comp = items[i];
+            for(var j=1; j < comp.layers.length+1; j++) {
+                if(new RegExp(files.join("|")).test(comp.layers[j].source)) {
+                    files.splice(comp.layers[j].source, 1);
+                }
+            }
+        }
+    }
+    //alert("file length: " + files.length);
+    return files.length;
+}
+
+//finds # of files in project
+function getNumberFiles() {
+    var res = 0;
+    var items = app.project.items;
+    for(var i=1; i < items.length+1; i++) {
+        if(items[i] instanceof FootageItem) {
+            res++;
+        }
+    }
+    //alert("adj layerss: " + res);
+    return res;
+}

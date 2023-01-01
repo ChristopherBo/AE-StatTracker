@@ -52,6 +52,16 @@ var interface = new CSInterface();
 		$('effects-total').innerText = res;
 	});
 
+	interface.evalScript('getNumberUnusedFiles()', function(res) {
+		//alert("adj layers: " + res);
+		$('unused-file-total').innerText = res;
+	});
+
+	interface.evalScript('getNumberFiles()', function(res) {
+		//alert("adj layers: " + res);
+		$('file-total').innerText = res;
+	});
+
 	//block ae from using ALL keys while this window is active
 	//keyRegisterOverride();
 
