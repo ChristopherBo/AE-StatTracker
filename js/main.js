@@ -169,14 +169,28 @@ function setTimer() {
 			throw error;
 		}
 		var lines = data.toString().split("\n");
+		var foundFile = false;
 		//find existing entry
 		for(var i=0; i < lines.length; i++) {
 			//alert(lines[i].split(",")[0] + "," + currentFilename);
 			if(currentFilename == lines[i].split(",")[0]) {
+				foundFile = true;
 				$('stopwatch').innerText = lines[i].split(",")[1];
 				break;
 			}
 		}
+
+		// //if not found create entry for it
+		// if(foundFile == false && currentFilename !== null) {
+		// 	$('stopwatch').innerText = "0:00:00";
+		// 	fs.appendFile(statsFilePath, currentFilename + ",0:00:00\n", err => {
+		// 		if (err) {
+		// 		  alert(err);
+		// 		  return;
+		// 		}
+		// 		//file written successfully
+		// 	});
+		// }
 	});
 	incrementTimer();
 }
@@ -185,6 +199,7 @@ setTimeout(setTimer, 1000);
 
 //increment the timer every second
 function incrementTimer() {
+	setTimer();
 	//get stuff from html
 	var time = $('stopwatch').innerText;
 	var tokens = time.split(":");
@@ -244,6 +259,7 @@ function saveTimer(timer) {
 
 		//if not found create entry for it
 		if(foundFile == false && currentFilename !== null) {
+			$('stopwatch').innerText = "0:00:00";
 			fs.appendFile(statsFilePath, currentFilename + "," + timer + "\n", err => {
 				if (err) {
 				  alert(err);
@@ -259,7 +275,10 @@ function saveTimer(timer) {
 function getCurrentFilename() {
 	interface.evalScript('getCurrentFilename()', function(res) {
 		//alert("res: " + res);
-		currentFilename = res;
+		if(currentFilename != res) {
+			currentFilename = res;
+			setTimer();
+		}
 	});
-	setTimeout(getCurrentFilename, 5000);
+	setTimeout(getCurrentFilename, 1000);
 }
