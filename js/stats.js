@@ -72,6 +72,11 @@ var interface = new CSInterface();
 		$('popular-effect').innerText = res;
 	});
 
+	interface.evalScript('getRenderTime()', function(res) {
+		//alert("adj layers: " + res);
+		$('render-time').innerText = res;
+	});
+
 	//block ae from using ALL keys while this window is active
 	//keyRegisterOverride();
 

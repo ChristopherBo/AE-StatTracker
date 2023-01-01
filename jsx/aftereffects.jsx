@@ -326,3 +326,27 @@ function getPopularEffect() {
     //alert("effect: " + res + ": " + fxDict[res]);
     return res;
 }
+
+//finds most used effect in project file
+function getRenderTime() {
+    var res = 0;
+    var items = app.project.renderQueue.items;
+    for(var i=1; i < items.length+1; i++) {
+        res += items[i].elapsedSeconds;
+    }
+    //convert to hh:mm:ss
+    var sec = parseInt(res, 10); 
+    var hours = Math.floor(sec / 3600); 
+    var minutes = Math.floor((sec - hours * 3600) / 60); 
+    var seconds = sec - hours * 3600 - minutes * 60;
+    if (hours < 10) {      hours = '0' + hours;    }
+    if (minutes < 10) {      minutes = '0' + minutes;    }
+    if (seconds < 10) {      seconds = '0' + seconds;    }
+    if (hours == 0) {
+      res = "0:" + minutes + ':' + seconds; // Return in MM:SS format
+    } else {
+      res = hours + ':' + minutes + ':' + seconds; // Return in HH:MM:SS format
+    }
+    //alert("effect: " + res + ": " + fxDict[res]);
+    return res;
+}
