@@ -301,6 +301,12 @@ function getCurrentFilename() {
 	interface.evalScript('getCurrentFilename()', function(res) {
 		//alert("res: " + res);
 		if(currentFilename != res) {
+			//do regex matching- if it has auto-save 4, copy, etc at the end remove that
+			//remove aep too
+			res = res.replace(".aep", "");
+			res = res.replace(/ \d+$/, "");
+			res = res.replace(" auto-save", "");
+			res = res.replace(" copy", "");
 			currentFilename = res;
 		}
 	});
