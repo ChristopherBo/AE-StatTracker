@@ -28,6 +28,30 @@ var interface = new CSInterface();
 	var home = require("os").homedir();
 	statsFilePath = home + '/Documents/stats.txt';
 
+	//get stats and fill in the table
+	getCurrentFilename();
+	setTimeout(readTimer, 1000);
+
+	interface.evalScript('getNumberAdjustmentLayers()', function(res) {
+		//alert("adj layers: " + res);
+		$('adj-layers').innerText = res;
+	});
+
+	interface.evalScript('getNumberPrecomps()', function(res) {
+		//alert("adj layers: " + res);
+		$('precomp-layers').innerText = res;
+	});
+
+	interface.evalScript('getNumberLayers()', function(res) {
+		//alert("adj layers: " + res);
+		$('layers-total').innerText = res;
+	});
+
+	interface.evalScript('getNumberEffects()', function(res) {
+		//alert("adj layers: " + res);
+		$('effects-total').innerText = res;
+	});
+
 	//block ae from using ALL keys while this window is active
 	//keyRegisterOverride();
 
@@ -188,8 +212,6 @@ function readTimer() {
 		$('time-total').innerText = total;
 	});
 }
-getCurrentFilename();
-setTimeout(readTimer, 1000);
 
 //get the current pf name every 5 seconds
 function getCurrentFilename() {

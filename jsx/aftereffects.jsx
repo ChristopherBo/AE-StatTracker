@@ -83,3 +83,79 @@ function getCurrentFilename() {
     //alert(new File($.fileName).name);
     return File.decode(app.project.file.name);
 }
+
+//finds # of adj layers used
+function getNumberAdjustmentLayers() {
+    var res = 0;
+    var items = app.project.items;
+    for(var i=1; i < items.length+1; i++) {
+        if(items[i] instanceof CompItem) {
+            //alert("found comp " + items[i].name);
+            var comp = items[i];
+            for(var j=1; j < comp.layers.length+1; j++) {
+                if(comp.layers[j].adjustmentLayer) {
+                    res++;
+                    //alert("res: " + res);
+                }
+            }
+        }
+    }
+    //alert("adj layerss: " + res);
+    return res;
+}
+
+//finds # of precomps used
+function getNumberPrecomps() {
+    var res = 0;
+    var items = app.project.items;
+    for(var i=1; i < items.length+1; i++) {
+        if(items[i] instanceof CompItem) {
+            //alert("found comp " + items[i].name);
+            var comp = items[i];
+            for(var j=1; j < comp.layers.length+1; j++) {
+                if(comp.layers[j].source instanceof CompItem) {
+                    res++;
+                    //alert("res: " + res);
+                }
+            }
+        }
+    }
+    //alert("adj layerss: " + res);
+    return res;
+}
+
+//finds # of layers used
+function getNumberLayers() {
+    var res = 0;
+    var items = app.project.items;
+    for(var i=1; i < items.length+1; i++) {
+        if(items[i] instanceof CompItem) {
+            //alert("found comp " + items[i].name);
+            var comp = items[i];
+            res += comp.layers.length;
+        }
+    }
+    //alert("adj layerss: " + res);
+    return res;
+}
+
+//finds # of layers used
+function getNumberEffects() {
+    var res = 0;
+    var items = app.project.items;
+    for(var i=1; i < items.length+1; i++) {
+        if(items[i] instanceof CompItem) {
+            //alert("found comp " + items[i].name);
+            var comp = items[i];
+            for(var j=1; j < comp.layers.length+1; j++) {
+                try { 
+                    res += comp.layers[j].effect.numProperties;
+                } catch (e) {
+                    //do nothing
+                }
+            }
+        }
+    }
+    //alert("adj layerss: " + res);
+    return res;
+}
