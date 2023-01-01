@@ -8,7 +8,6 @@
 * {
 	font-family: system-ui, Ubuntu, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
 	font-size: 12px;
-	background-color: #232323;
 	color:#D7D7D7;
 }
 
@@ -23,6 +22,7 @@ body {
 	overflow-x: hidden;
 	height:100%;
 	margin:0;
+	background-color: #232323;
 }
 
 p {

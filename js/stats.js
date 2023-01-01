@@ -81,9 +81,9 @@ var interface = new CSInterface();
 	interface.evalScript('getAppVersion()', function(res) {
 		//alert("adj layers: " + res);
 		var crashFilePath = home + '/AppData/Roaming/Adobe/After Effects/' + res + '/logs';
-		alert(crashFilePath);
+		//alert(crashFilePath);
 		fs.readdir(crashFilePath, (err, files) => {
-			alert(files.length);
+			//alert(files.length);
 			$('crash-total').innerText = files.length;
 		});
 		
