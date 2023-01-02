@@ -315,6 +315,7 @@ function getNumberFiles() {
 //finds most used effect in project file
 function getPopularEffect() {
     var res = 0;
+    var resName = "";
     var resCount = 0;
     var fxDict = {};
     var items = app.project.items;
@@ -341,6 +342,7 @@ function getPopularEffect() {
                             }
                             if(res == 0 || fxDict[effect.matchName] > fxDict[res]) {
                                 res = effect.matchName;
+                                resName = effect.name;
                                 resCount = fxDict[res];
                             }
                         }
@@ -352,8 +354,10 @@ function getPopularEffect() {
             }
         }
     }
+    //truncate any numbers from the end from duplicating fx
+    resName = resName.replace(/ \d+$/, "");
     //alert("effect: " + res + ": " + fxDict[res]);
-    return res + "," + resCount;
+    return resName + "," + resCount;
 }
 
 //finds most used effect in project file
