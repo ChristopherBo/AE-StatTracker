@@ -272,6 +272,33 @@ function getNumberUnusedFiles() {
     return files.length;
 }
 
+//finds # of each file in proj
+//res[0] = video file total
+//   [1] = image file total
+//   [2] = audio file total
+function getFileTypeTotals() {
+    var res = [0, 0, 0];
+    var items = app.project.items;
+    //get a list of all files in pf
+    for(var i=1; i < items.length+1; i++) {
+        //make sure its a real file
+        if(items[i] instanceof FootageItem) {
+            if(items[i].mainSource instanceof FileSource) {
+                //check if each type
+                if(items[i].duration == 0) { //image
+                    res[1]++;
+                } else if(items[i].hasVideo) { //video
+                    res[0]++;
+                } else if(items[i].hasAudio) { //audio
+                    res[2]++;
+                }
+            }
+        }
+    }
+
+    return res;
+}
+
 //finds # of files in project
 function getNumberFiles() {
     var res = 0;

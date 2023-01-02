@@ -57,6 +57,14 @@ var interface = new CSInterface();
 		$('keyframes-total').innerText = res;
 	});
 
+	interface.evalScript('getFileTypeTotals()', function(res) {
+		//alert("adj layers: " + res);
+		res = res.replace(/[|]/, "").split(",");
+		$('video-file-total').innerText = res[0];
+		$('image-file-total').innerText = res[1];
+		$('audio-file-total').innerText = res[2];
+	});
+
 	interface.evalScript('getNumberUnusedFiles()', function(res) {
 		//alert("adj layers: " + res);
 		$('unused-file-total').innerText = res;
