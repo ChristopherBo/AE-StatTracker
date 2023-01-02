@@ -315,6 +315,7 @@ function getNumberFiles() {
 //finds most used effect in project file
 function getPopularEffect() {
     var res = 0;
+    var resCount = 0;
     var fxDict = {};
     var items = app.project.items;
     for(var i=1; i < items.length+1; i++) {
@@ -340,6 +341,7 @@ function getPopularEffect() {
                             }
                             if(res == 0 || fxDict[effect.matchName] > fxDict[res]) {
                                 res = effect.matchName;
+                                resCount = fxDict[res];
                             }
                         }
                         l++;
@@ -351,7 +353,7 @@ function getPopularEffect() {
         }
     }
     //alert("effect: " + res + ": " + fxDict[res]);
-    return res;
+    return res + "," + resCount;
 }
 
 //finds most used effect in project file
