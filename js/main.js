@@ -272,17 +272,25 @@ function saveTimer(timer) {
 			//currentFilename = getCurrentFilename(); //ie script testing.aep
 			if(currentFilename == lines[i].split(",")[0] && currentFilename !== null) {
 				foundFile = true;
-				
-				//if current time isnt the time in the file + 1sec fallback to file time + 1sec
 				var time = lines[i].split(",")[1];
-				var incrementedTime = incrementTimestamp(time); //current time in file + 1 sec
-				if(timer != incrementedTime) {
-					$('stopwatch').innerText = incrementedTime;
-					timer = incrementedTime;
+				
+				//if for some reason it's NaN:NaN:NaN kill everything and redo it
+				if(time == "NaN:NaN:NaN") {
+					$('stopwatch').innerText = "0:00:00";
+					fs.writeFile(statsFilePath, data.toString().replace(new RegExp(`${currentFilename},.*`, 'g'), currentFilename + ",00:00:00"), err => {
+						if (err) { alert(err); return; }
+					});
+				} else {
+					//if current time isnt the time in the file + 1sec fallback to file time + 1sec
+					var incrementedTime = incrementTimestamp(time); //current time in file + 1 sec
+					if(timer != incrementedTime) {
+						$('stopwatch').innerText = incrementedTime;
+						timer = incrementedTime;
+					}
+					fs.writeFile(statsFilePath, data.toString().replace(new RegExp(`${currentFilename},.*`, 'g'), currentFilename + "," + timer), err => {
+						if (err) { alert(err); return; }
+					});
 				}
-				fs.writeFile(statsFilePath, data.toString().replace(new RegExp(`${currentFilename},.*`, 'g'), currentFilename + "," + timer), err => {
-					if (err) { alert(err); return; }
-				});
 			}
 		}
 
