@@ -205,6 +205,14 @@ input[type="checkbox"] {
 	color: #D7D7D7;
 }
 
+#preferencesSection {
+	/* width: 400px;
+	height: 355px; */
+	margin:10px;
+	display: inline-block;
+	color: #D7D7D7;
+}
+
 button {
 	margin-top:2px;
 	margin-bottom:2px;
