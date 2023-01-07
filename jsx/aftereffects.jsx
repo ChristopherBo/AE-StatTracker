@@ -357,7 +357,7 @@ function getPopularEffect() {
     //truncate any numbers from the end from duplicating fx
     resName = resName.replace(/ \d+$/, "");
     //alert("effect: " + res + ": " + fxDict[res]);
-    return resName + "," + resCount;
+    return resName + ", " + resCount;
 }
 
 //finds most used effect in project file
