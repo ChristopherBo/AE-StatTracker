@@ -82,7 +82,7 @@ function changeTheme(e) {
 			if("hexcolor" == lines[i].split(",")[0]) {
 				//it exists, replace it
 				foundFile = true;
-				fs.writeFile(statsFilePath, data.toString().replace(new RegExp(`hexcolor,.*`, 'g'), "hexcolor," + e.target.value), err => {
+				fs.writeFile(statsFilePath, data.toString().replace(new RegExp(`^hexcolor,.*`, 'g'), "hexcolor," + e.target.value), err => {
 					if (err) { alert(err); return; }
 				});
 			}
