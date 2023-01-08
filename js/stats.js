@@ -118,102 +118,10 @@ var interface = new CSInterface();
 
 //if checkbox not checked gray out/disable keybinds
 var nodes;
-function toggleBinds(e) {
-	if(!$('custombinds-checkbox').checked) {
-		// alert("unchecked");
-		$('binds').style.color = 'grey';
-		nodes = document.querySelectorAll("input[type=text]");
-		for (var i=0; i<nodes.length; i++) {
-			nodes[i].style.color = 'grey';
-			nodes[i].setAttribute("readonly", "true");
-		}
-	} else {
-		// alert("checked");
-		$('binds').style.color = 'white';
-		nodes = document.querySelectorAll("input[type=text]");
-		for (var i=0; i<nodes.length; i++) {
-			nodes[i].style.color = 'white';
-			nodes[i].removeAttribute("readonly");
-		}
-	}
-}
-
-//listen for color theme changing
-function changeTheme(e) {
-	//alert(e.target.value);
-	//change color of bgnd text boxes
-	nodes = document.querySelectorAll("input[type=text]");
-	for (var i=0; i<nodes.length; i++) {
-		nodes[i].style.backgroundColor = e.target.value;
-	}
-	nodes = document.querySelectorAll("button");
-	for (var i=0; i<nodes.length; i++) {
-		nodes[i].style.backgroundColor = e.target.value;
-	}
-
-	nodes = document.getElementsByClassName('container');
-	for (var i=0; i<nodes.length; i++) {
-		//document.getElementsByClassName('container')[i].childNodes[3].style.backgroundColor = e.target.value;
-		if(!document.getElementsByClassName('container')[i].childNodes[1].checked) {
-			document.getElementsByClassName('container')[i].childNodes[3].style.backgroundColor = e.target.value;
-		} else {
-			document.getElementsByClassName('container')[i].childNodes[3].style.backgroundColor = "#D7D7D7";
-		}
-	}
-
-	$('color-picker').style.backgroundColor = e.target.value;
-}
-
-//check if checkbox checked or unchecked to make sure its being the right color
-function toggleCheckbox(e) {
-	//alert(e.currentTarget.id + " " + e.currentTarget.checked);
-	if(!e.currentTarget.checked) {
-		e.currentTarget.parentNode.childNodes[3].style.backgroundColor = $('color-picker').value;
-	} else {
-		e.currentTarget.parentNode.childNodes[3].style.backgroundColor = "#D7D7D7";
-	}
-}
-
 
 function statsClick() {
 	//alert("stats click");
 	interface.requestOpenExtension("com.ahr.stattracker.stats.panel");
-}
-
-function setupClick() {
-	//alert("setting up...");
-	interface.evalScript('setupEnv()', function(res) {
-		//alert("res: " + res);
-		$('status').innerText = res;
-	});
-}
-
-function nextClick() {
-	interface.evalScript('nextButton(' + $('renderqueue-checkbox').checked + ', ' + $('custombinds-checkbox').checked + ')', function(res) {
-		//alert("res: " + res);
-		$('status').innerText = res;
-	});
-}
-
-function backClick() {
-	interface.evalScript('backButton()', function(res) {
-		//alert("res: " + res);
-		$('status').innerText = res;
-	});
-}
-
-function forwardClick() {
-	interface.evalScript('forwardButton()', function(res) {
-		//alert("res: " + res);
-		$('status').innerText = res;
-	});
-}
-
-function keyframeClick() {
-	interface.evalScript('keyframeButton()', function(res) {
-		//alert("res: " + res);
-		$('status').innerText = res;
-	});
 }
 
 function getOS() {
@@ -243,7 +151,7 @@ function readTimer() {
 		//find existing entry
 		for(var i=0; i < lines.length; i++) {
 			if(lines[i] != "") {
-				if(lines[i].split(",")[0] !== undefined) {
+				if(lines[i].split(",")[0] !== undefined && lines[i].split(",")[0] != "hexcolor") {
 					//alert(lines[i].split(",")[0] + "," + currentFilename);
 					if(currentFilename == lines[i].split(",")[0]) {
 						$('time-currentPF').innerText = lines[i].split(",")[1];
