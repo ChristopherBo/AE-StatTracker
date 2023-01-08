@@ -488,10 +488,13 @@ function getCurrentFilename() {
 		if(currentFilename != res) {
 			//do regex matching- if it has auto-save 4, copy, etc at the end remove that
 			//remove aep too
+			var oldres = res;
 			res = res.replace(".aep", "");
-			res = res.replace(/ \d+$/, "");
 			res = res.replace(" auto-save", "");
 			res = res.replace(" copy", "");
+			if(oldres != res) {
+				res = res.replace(/ \d+$/, "");
+			}
 			currentFilename = res;
 		}
 	});
