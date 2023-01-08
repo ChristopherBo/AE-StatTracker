@@ -26,7 +26,14 @@ var interface = new CSInterface();
 
 	//find and set statsfilepath
 	var home = require("os").homedir();
-	statsFilePath = home + '/Documents/stats.txt';
+	statsFilePath = home + '/stats.txt';
+	try {
+		if (!fs.existsSync(statsFilePath)) {
+			fs.open(statsFilePath, 'w', function (err, file) {
+				if (err) throw err;
+			});
+		}
+	} catch(err) {}
 
 	//block ae from using ALL keys while this window is active
 	//keyRegisterOverride();
@@ -481,6 +488,15 @@ function incrementTimestamp(time) {
 
 //save the timer to stats file
 function saveTimer(timer) {
+	//make sure file actually exists before saving data to it
+	try {
+		if (!fs.existsSync(statsFilePath)) {
+			fs.open(statsFilePath, 'w', function (err, file) {
+				if (err) throw err;
+			});
+		}
+	} catch(err) {}
+	
 	//read existing files contents
 	fs.readFile(statsFilePath, (error, data) => {
 		if(error) { throw error; }
