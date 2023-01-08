@@ -102,11 +102,7 @@ function changeTheme(e) {
 			});
 		}
 
-		//change theme
-		document.body.style.backgroundColor = e.target.value;
-		$('color-picker').style.backgroundColor = e.target.value;
-		$('color-picker').value = e.target.value;
-		$('color-picker').jscolor.fromString(e.target.value);
+		applyChangedColorTheme(e.target.value);
 	});
 }
 
@@ -137,21 +133,7 @@ function changeAltTheme(e) {
 			});
 		}
 
-		//change theme
-		var rows = document.getElementsByTagName('tr');
-		for(var i=0; i<rows.length; i++) {
-			if(getComputedStyle(rows[i]).backgroundColor != 'rgba(0, 0, 0, 0)') {
-				rows[i].style.backgroundColor = e.target.value;
-			}
-		}
-
-		var topnav = document.getElementsByTagName('li');
-		for(var i=0; i<topnav.length; i++) {
-			if(getComputedStyle(topnav[0]).backgroundColor != 'rgba(0, 0, 0, 0)') {
-				topnav[i].style.backgroundColor = e.target.value;
-			}
-		}
-		$('color-picker-alt').jscolor.fromString(e.target.value);
+		applyChangedAltTheme(e.target.value);
 	});
 }
 
@@ -183,14 +165,7 @@ function changeTextTheme(e) {
 				if (err) { alert(err); return; }
 			});
 		}
-
-		//apply changed theme
-		$('preferencesSection').style.color = e.target.value;
-		document.getElementsByTagName('p')[0].style.color = e.target.value;
-		$('color-picker').style.color = e.target.value;
-		$('color-picker-alt').style.color = e.target.value;
-		$('color-picker-text').style.color = e.target.value;	
-		$('color-picker-text').jscolor.fromString(e.target.value);
+		applyChangedTextTheme(e.target.value);
 	});
 }
 
@@ -222,104 +197,100 @@ function applyChangedTheme() {
 		
 		//change the proper stuff to change if color isnt null
 		if(color != "") {
-			//alert(e.target.value);
 			//change color of things
-			document.body.style.backgroundColor = color;
-			
-			// nodes = document.querySelectorAll("input[type=text]");
-			// for (var i=0; i<nodes.length; i++) {
-			// 	nodes[i].style.backgroundColor = color;
-			// }
-
-			// nodes = document.getElementsByClassName('container');
-			// for (var i=0; i<nodes.length; i++) {
-			// 	//document.getElementsByClassName('container')[i].childNodes[3].style.backgroundColor = color;
-			// 	if(!document.getElementsByClassName('container')[i].childNodes[1].checked) {
-			// 		document.getElementsByClassName('container')[i].childNodes[3].style.backgroundColor = color;
-			// 	} else {
-			// 		document.getElementsByClassName('container')[i].childNodes[3].style.backgroundColor = "#D7D7D7";
-			// 	}
-			// }
-
-			try {
-				$('color-picker').style.backgroundColor = color;
-				$('color-picker').value = color;
-				$('color-picker').jscolor.fromString(color);
-
-				$('color-picker-alt').style.backgroundColor = color;
-				$('color-picker-text').style.backgroundColor = color;
-			} catch(e) {}
+			applyChangedColorTheme(color);
 		}
 
 		if(altcolor != "") {
-			try {
-				var rows = document.getElementsByTagName('tr');
-				for(var i=0; i<rows.length; i++) {
-					// alert(getComputedStyle(rows[i]).backgroundColor);
-					if(getComputedStyle(rows[i]).backgroundColor != 'rgba(0, 0, 0, 0)') {
-						rows[i].style.backgroundColor = altcolor;
-					}
-				}
-			} catch(e) {}
-
-			try {
-				var topnav = document.getElementsByTagName('a');
-				for(var i=0; i<topnav.length; i++) {
-					//alert(getComputedStyle(topnav[i]).backgroundColor);
-					if(getComputedStyle(topnav[i]).backgroundColor != 'rgba(0, 0, 0, 0)') {
-						topnav[i].style.backgroundColor = altcolor;
-					}
-				}
-				$('color-picker-alt').jscolor.fromString(altcolor);
-			} catch(e) {}
-
-			try {
-				var topnav = document.getElementsByTagName('hr');
-				for(var i=0; i<topnav.length; i++) {
-					//alert(getComputedStyle(topnav[i]).backgroundColor);
-					topnav[i].style.borderColor = altcolor;
-				}
-				$('color-picker-alt').jscolor.fromString(altcolor);
-			} catch(e) {}
-
-			try {
-				document.getElementById('stats-button').style.backgroundColor = altcolor;
-			} catch(e) {}
+			applyChangedAltTheme(altcolor);
 		}
 
 		if(textcolor != "") {
-			document.body.style.color = textcolor;
-			try {
-				$('preferencesSection').style.color = textcolor;
-				document.getElementsByTagName('p')[0].style.color = textcolor;
-				$('color-picker').style.color = textcolor;
-				$('color-picker-alt').style.color = textcolor;
-				$('color-picker-text').style.color = textcolor;	
-
-				$('color-picker-text').jscolor.fromString(textcolor);
-			} catch(e) {}
-
-			try {
-				var textnodes = document.getElementsByTagName('td');
-				for(var i=0; i < textnodes.length; i++) {
-					textnodes[i].style.color = textcolor;
-				}
-			} catch(e) {}
-
-			try {
-				var topp = document.getElementsByTagName('a');
-				for(var i=0; i < topp.length; i++) {
-					topp[i].style.color = textcolor;
-				}
-			} catch(e) {}
-
-			try {
-				document.getElementById('stats-button').style.color = textcolor;
-			} catch(e) {}
+			applyChangedTextTheme(textcolor);
 		}
 	});
 }
 applyChangedTheme();
+
+function applyChangedColorTheme(color) {
+	document.body.style.backgroundColor = color;
+
+	try {
+		$('color-picker').style.backgroundColor = color;
+		$('color-picker').value = color;
+		$('color-picker').jscolor.fromString(color);
+
+		$('color-picker-alt').style.backgroundColor = color;
+		$('color-picker-text').style.backgroundColor = color;
+	} catch(e) {}
+}
+
+function applyChangedAltTheme(altcolor) {
+	try {
+		var rows = document.getElementsByTagName('tr');
+		for(var i=0; i<rows.length; i++) {
+			// alert(getComputedStyle(rows[i]).backgroundColor);
+			if(getComputedStyle(rows[i]).backgroundColor != 'rgba(0, 0, 0, 0)') {
+				rows[i].style.backgroundColor = altcolor;
+			}
+		}
+	} catch(e) {}
+
+	try {
+		var topnav = document.getElementsByTagName('a');
+		for(var i=0; i<topnav.length; i++) {
+			//alert(getComputedStyle(topnav[i]).backgroundColor);
+			if(getComputedStyle(topnav[i]).backgroundColor != 'rgba(0, 0, 0, 0)') {
+				topnav[i].style.backgroundColor = altcolor;
+			}
+		}
+		$('color-picker-alt').jscolor.fromString(altcolor);
+	} catch(e) {}
+
+	try {
+		var topnav = document.getElementsByTagName('hr');
+		for(var i=0; i<topnav.length; i++) {
+			//alert(getComputedStyle(topnav[i]).backgroundColor);
+			topnav[i].style.borderColor = altcolor;
+		}
+		$('color-picker-alt').jscolor.fromString(altcolor);
+	} catch(e) {}
+
+	try {
+		document.getElementById('stats-button').style.backgroundColor = altcolor;
+	} catch(e) {}
+}
+
+function applyChangedTextTheme(textcolor) {
+	document.body.style.color = textcolor;
+	try {
+		$('preferencesSection').style.color = textcolor;
+		document.getElementsByTagName('p')[0].style.color = textcolor;
+		$('color-picker').style.color = textcolor;
+		$('color-picker-alt').style.color = textcolor;
+		$('color-picker-text').style.color = textcolor;	
+
+		$('color-picker-text').jscolor.fromString(textcolor);
+	} catch(e) {}
+
+	try {
+		var textnodes = document.getElementsByTagName('td');
+		for(var i=0; i < textnodes.length; i++) {
+			textnodes[i].style.color = textcolor;
+		}
+	} catch(e) {}
+
+	try {
+		var topp = document.getElementsByTagName('a');
+		for(var i=0; i < topp.length; i++) {
+			topp[i].style.color = textcolor;
+		}
+	} catch(e) {}
+
+	try {
+		document.getElementById('stats-button').style.color = textcolor;
+	} catch(e) {}
+}
 
 //check if checkbox checked or unchecked to make sure its being the right color
 function toggleCheckbox(e) {
@@ -335,42 +306,6 @@ function toggleCheckbox(e) {
 function statsClick() {
 	//alert("stats click");
 	interface.requestOpenExtension("com.ahr.stattracker.stats.panel");
-}
-
-function setupClick() {
-	//alert("setting up...");
-	interface.evalScript('setupEnv()', function(res) {
-		//alert("res: " + res);
-		$('status').innerText = res;
-	});
-}
-
-function nextClick() {
-	interface.evalScript('nextButton(' + $('renderqueue-checkbox').checked + ', ' + $('custombinds-checkbox').checked + ')', function(res) {
-		//alert("res: " + res);
-		$('status').innerText = res;
-	});
-}
-
-function backClick() {
-	interface.evalScript('backButton()', function(res) {
-		//alert("res: " + res);
-		$('status').innerText = res;
-	});
-}
-
-function forwardClick() {
-	interface.evalScript('forwardButton()', function(res) {
-		//alert("res: " + res);
-		$('status').innerText = res;
-	});
-}
-
-function keyframeClick() {
-	interface.evalScript('keyframeButton()', function(res) {
-		//alert("res: " + res);
-		$('status').innerText = res;
-	});
 }
 
 function getOS() {
@@ -496,7 +431,7 @@ function saveTimer(timer) {
 			});
 		}
 	} catch(err) {}
-	
+
 	//read existing files contents
 	fs.readFile(statsFilePath, (error, data) => {
 		if(error) { throw error; }
