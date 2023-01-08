@@ -94,15 +94,106 @@ function changeTheme(e) {
 				if (err) { alert(err); return; }
 			});
 		}
+
+		//change theme
+		document.body.style.backgroundColor = e.target.value;
+		$('color-picker').style.backgroundColor = e.target.value;
+		$('color-picker').value = e.target.value;
+		$('color-picker').jscolor.fromString(e.target.value);
 	});
-	applyChangedTheme();
+}
+
+//listen for color theme changing
+function changeAltTheme(e) {
+	//save the theme into stats.txt
+	//if it DNE add it; if it exists replace it
+	var foundAltColor = false;
+	fs.readFile(statsFilePath, (error, data) => {
+		if(error) { throw error; }
+
+		var lines = data.toString().split("\n");
+		//find existing entry if exists
+		for(var i=0; i < lines.length; i++) {
+			if("althexcolor" == lines[i].split(",")[0]) {
+				//it exists, replace it
+				foundAltColor = true;
+				fs.writeFile(statsFilePath, data.toString().replace(new RegExp(`althexcolor,.*`, 'g'), "althexcolor," + e.target.value), err => {
+					if (err) { alert(err); return; }
+				});
+			}
+		}
+
+		//dne, add it
+		if(foundAltColor == false) {
+			fs.appendFile(statsFilePath, "althexcolor," + e.target.value + "\n", err => {
+				if (err) { alert(err); return; }
+			});
+		}
+
+		//change theme
+		var rows = document.getElementsByTagName('tr');
+		for(var i=0; i<rows.length; i++) {
+			if(getComputedStyle(rows[i]).backgroundColor != 'rgba(0, 0, 0, 0)') {
+				rows[i].style.backgroundColor = e.target.value;
+			}
+		}
+
+		var topnav = document.getElementsByTagName('li');
+		for(var i=0; i<topnav.length; i++) {
+			if(getComputedStyle(topnav[0]).backgroundColor != 'rgba(0, 0, 0, 0)') {
+				topnav[i].style.backgroundColor = e.target.value;
+			}
+		}
+		$('color-picker-alt').jscolor.fromString(e.target.value);
+	});
+}
+
+//listen for color theme changing
+function changeTextTheme(e) {
+	//alert("text")
+	//save the theme into stats.txt
+	//if it DNE add it; if it exists replace it
+	var foundTextColor = false;
+	fs.readFile(statsFilePath, (error, data) => {
+		//alert("read");
+		if(error) { throw error; }
+		var lines = data.toString().split("\n");
+		//find existing entry if exists
+		for(var i=0; i < lines.length; i++) {
+			//alert(lines[i]);
+			if("texthexcolor" == lines[i].split(",")[0]) {
+				//it exists, replace it
+				//alert("true, " + lines[i]);
+				foundTextColor = true;
+				fs.writeFile(statsFilePath, data.toString().replace(new RegExp(`texthexcolor,.*`, 'g'), "texthexcolor," + e.target.value), err => {
+					if (err) { alert(err); return; }
+				});
+			}
+		}
+		if(foundTextColor == false) {
+			//alert("false, " + e.target.value);
+			fs.appendFile(statsFilePath, "texthexcolor," + e.target.value + "\n", err => {
+				if (err) { alert(err); return; }
+			});
+		}
+
+		//apply changed theme
+		$('preferencesSection').style.color = e.target.value;
+		document.getElementsByTagName('p')[0].style.color = e.target.value;
+		$('color-picker').style.color = e.target.value;
+		$('color-picker-alt').style.color = e.target.value;
+		$('color-picker-text').style.color = e.target.value;	
+		$('color-picker-text').jscolor.fromString(e.target.value);
+	});
 }
 
 //when html opens check for changed theme; if changed go change it
 function applyChangedTheme() {
 	//go find the changed theme
 	//read existing files contents
-	var color = null;
+	var color = "";
+	var altcolor = "";
+	var textcolor = "";
 	fs.readFile(statsFilePath, (error, data) => {
 		if(error) { throw error; }
 
@@ -112,38 +203,108 @@ function applyChangedTheme() {
 			//alert("line: " + i + ": " + lines[i] + "\n" + lines[i].split(",")[0]);
 			if("hexcolor" == lines[i].split(",")[0]) {
 				color = lines[i].split(",")[1];
+				//alert("hexcolor found: " + color);
+			} else if("althexcolor" == lines[i].split(",")[0]) {
+				altcolor = lines[i].split(",")[1];
+				//alert("althexcolor found: " + altcolor);
+			} else if("texthexcolor" == lines[i].split(",")[0]) {
+				textcolor = lines[i].split(",")[1];
+				//alert("texthexcolor found: " + textcolor);
 			}
 		}
-
 		
 		//change the proper stuff to change if color isnt null
-		if(color != null) {
+		if(color != "") {
 			//alert(e.target.value);
 			//change color of things
 			document.body.style.backgroundColor = color;
 			
-			nodes = document.querySelectorAll("input[type=text]");
-			for (var i=0; i<nodes.length; i++) {
-				nodes[i].style.backgroundColor = color;
-			}
-			nodes = document.querySelectorAll("button");
-			for (var i=0; i<nodes.length; i++) {
-				nodes[i].style.backgroundColor = color;
-			}
+			// nodes = document.querySelectorAll("input[type=text]");
+			// for (var i=0; i<nodes.length; i++) {
+			// 	nodes[i].style.backgroundColor = color;
+			// }
+			// nodes = document.querySelectorAll("button");
+			// for (var i=0; i<nodes.length; i++) {
+			// 	nodes[i].style.backgroundColor = color;
+			// }
 
-			nodes = document.getElementsByClassName('container');
-			for (var i=0; i<nodes.length; i++) {
-				//document.getElementsByClassName('container')[i].childNodes[3].style.backgroundColor = color;
-				if(!document.getElementsByClassName('container')[i].childNodes[1].checked) {
-					document.getElementsByClassName('container')[i].childNodes[3].style.backgroundColor = color;
-				} else {
-					document.getElementsByClassName('container')[i].childNodes[3].style.backgroundColor = "#D7D7D7";
+			// nodes = document.getElementsByClassName('container');
+			// for (var i=0; i<nodes.length; i++) {
+			// 	//document.getElementsByClassName('container')[i].childNodes[3].style.backgroundColor = color;
+			// 	if(!document.getElementsByClassName('container')[i].childNodes[1].checked) {
+			// 		document.getElementsByClassName('container')[i].childNodes[3].style.backgroundColor = color;
+			// 	} else {
+			// 		document.getElementsByClassName('container')[i].childNodes[3].style.backgroundColor = "#D7D7D7";
+			// 	}
+			// }
+
+			try {
+				$('color-picker').style.backgroundColor = color;
+				$('color-picker').value = color;
+				$('color-picker').jscolor.fromString(color);
+
+				$('color-picker-alt').style.backgroundColor = color;
+				$('color-picker-text').style.backgroundColor = color;
+			} catch(e) {}
+		}
+
+		if(altcolor != "") {
+			try {
+				var rows = document.getElementsByTagName('tr');
+				for(var i=0; i<rows.length; i++) {
+					// alert(getComputedStyle(rows[i]).backgroundColor);
+					if(getComputedStyle(rows[i]).backgroundColor != 'rgba(0, 0, 0, 0)') {
+						rows[i].style.backgroundColor = altcolor;
+					}
 				}
-			}
+			} catch(e) {}
 
-			$('color-picker').style.backgroundColor = color;
-			$('color-picker').value = color;
-			$('color-picker').jscolor.fromString(color);
+			try {
+				var topnav = document.getElementsByTagName('a');
+				for(var i=0; i<topnav.length; i++) {
+					//alert(getComputedStyle(topnav[i]).backgroundColor);
+					if(getComputedStyle(topnav[i]).backgroundColor != 'rgba(0, 0, 0, 0)') {
+						topnav[i].style.backgroundColor = altcolor;
+					}
+				}
+				$('color-picker-alt').jscolor.fromString(altcolor);
+			} catch(e) {}
+
+			try {
+				var topnav = document.getElementsByTagName('hr');
+				for(var i=0; i<topnav.length; i++) {
+					//alert(getComputedStyle(topnav[i]).backgroundColor);
+					topnav[i].style.borderColor = altcolor;
+				}
+				$('color-picker-alt').jscolor.fromString(altcolor);
+			} catch(e) {}
+		}
+
+		if(textcolor != "") {
+			document.body.style.color = textcolor;
+			try {
+				$('preferencesSection').style.color = textcolor;
+				document.getElementsByTagName('p')[0].style.color = textcolor;
+				$('color-picker').style.color = textcolor;
+				$('color-picker-alt').style.color = textcolor;
+				$('color-picker-text').style.color = textcolor;	
+
+				$('color-picker-text').jscolor.fromString(textcolor);
+			} catch(e) {}
+
+			try {
+				var textnodes = document.getElementsByTagName('td');
+				for(var i=0; i < textnodes.length; i++) {
+					textnodes[i].style.color = textcolor;
+				}
+			} catch(e) {}
+
+			try {
+				var topp = document.getElementsByTagName('a');
+				for(var i=0; i < topp.length; i++) {
+					topp[i].style.color = textcolor;
+				}
+			} catch(e) {}
 		}
 	});
 }

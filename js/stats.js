@@ -102,9 +102,13 @@ var interface = new CSInterface();
 function applyChangedTheme() {
 	//go find the changed theme
 	//read existing files contents
-	var color = null;
+	var color = "";
+	var altcolor = "";
+	var textcolor = "";
+	// alert("nothing");
 	fs.readFile(statsFilePath, (error, data) => {
 		if(error) { throw error; }
+		// alert("something");
 
 		var lines = data.toString().split("\n");
 		//find existing entry if exists
@@ -112,38 +116,99 @@ function applyChangedTheme() {
 			//alert("line: " + i + ": " + lines[i] + "\n" + lines[i].split(",")[0]);
 			if("hexcolor" == lines[i].split(",")[0]) {
 				color = lines[i].split(",")[1];
+				// alert("hexcolor found: " + color);
+			} else if("althexcolor" == lines[i].split(",")[0]) {
+				altcolor = lines[i].split(",")[1];
+				// alert("althexcolor found: " + altcolor);
+			} else if("texthexcolor" == lines[i].split(",")[0]) {
+				textcolor = lines[i].split(",")[1];
+				// alert("texthexcolor found: " + textcolor);
 			}
 		}
-
 		
 		//change the proper stuff to change if color isnt null
-		if(color != null) {
+		if(color != "") {
 			//alert(e.target.value);
 			//change color of things
 			document.body.style.backgroundColor = color;
 			
-			nodes = document.querySelectorAll("input[type=text]");
-			for (var i=0; i<nodes.length; i++) {
-				nodes[i].style.backgroundColor = color;
-			}
-			nodes = document.querySelectorAll("button");
-			for (var i=0; i<nodes.length; i++) {
-				nodes[i].style.backgroundColor = color;
-			}
+			// nodes = document.querySelectorAll("input[type=text]");
+			// for (var i=0; i<nodes.length; i++) {
+			// 	nodes[i].style.backgroundColor = color;
+			// }
+			// nodes = document.querySelectorAll("button");
+			// for (var i=0; i<nodes.length; i++) {
+			// 	nodes[i].style.backgroundColor = color;
+			// }
 
-			nodes = document.getElementsByClassName('container');
-			for (var i=0; i<nodes.length; i++) {
-				//document.getElementsByClassName('container')[i].childNodes[3].style.backgroundColor = color;
-				if(!document.getElementsByClassName('container')[i].childNodes[1].checked) {
-					document.getElementsByClassName('container')[i].childNodes[3].style.backgroundColor = color;
-				} else {
-					document.getElementsByClassName('container')[i].childNodes[3].style.backgroundColor = "#D7D7D7";
+			// nodes = document.getElementsByClassName('container');
+			// for (var i=0; i<nodes.length; i++) {
+			// 	//document.getElementsByClassName('container')[i].childNodes[3].style.backgroundColor = color;
+			// 	if(!document.getElementsByClassName('container')[i].childNodes[1].checked) {
+			// 		document.getElementsByClassName('container')[i].childNodes[3].style.backgroundColor = color;
+			// 	} else {
+			// 		document.getElementsByClassName('container')[i].childNodes[3].style.backgroundColor = "#D7D7D7";
+			// 	}
+			// }
+
+			try {
+				$('color-picker').style.backgroundColor = color;
+				$('color-picker').value = color;
+				$('color-picker').jscolor.fromString(color);
+
+				$('color-picker-alt').style.backgroundColor = color;
+				$('color-picker-text').style.backgroundColor = color;
+			} catch(e) {}
+		}
+
+		if(altcolor != "") {
+			try {
+				var rows = document.getElementsByTagName('tr');
+				for(var i=0; i<rows.length; i++) {
+					// alert(getComputedStyle(rows[i]).backgroundColor);
+					if(getComputedStyle(rows[i]).backgroundColor != 'rgba(0, 0, 0, 0)') {
+						rows[i].style.backgroundColor = altcolor;
+					}
 				}
-			}
+			} catch(e) {}
 
-			$('color-picker').style.backgroundColor = color;
-			$('color-picker').value = color;
-			$('color-picker').jscolor.fromString(color);
+			try {
+				var topnav = document.getElementsByTagName('a');
+				for(var i=0; i<topnav.length; i++) {
+					//alert(getComputedStyle(topnav[i]).backgroundColor);
+					if(getComputedStyle(topnav[i]).backgroundColor != 'rgba(0, 0, 0, 0)') {
+						topnav[i].style.backgroundColor = altcolor;
+					}
+				}
+				$('color-picker-alt').jscolor.fromString(altcolor);
+			} catch(e) {}
+		}
+
+		if(textcolor != "") {
+			document.body.style.color = textcolor;
+			try {
+				$('preferencesSection').style.color = textcolor;
+				document.getElementsByTagName('p')[0].style.color = textcolor;
+				$('color-picker').style.color = textcolor;
+				$('color-picker-alt').style.color = textcolor;
+				$('color-picker-text').style.color = textcolor;	
+
+				$('color-picker-text').jscolor.fromString(textcolor);
+			} catch(e) {}
+
+			try {
+				var textnodes = document.getElementsByTagName('td');
+				for(var i=0; i < textnodes.length; i++) {
+					textnodes[i].style.color = textcolor;
+				}
+			} catch(e) {}
+
+			try {
+				var topp = document.getElementsByTagName('a');
+				for(var i=0; i < topp.length; i++) {
+					topp[i].style.color = textcolor;
+				}
+			} catch(e) {}
 		}
 	});
 }
@@ -177,7 +242,7 @@ function readTimer() {
 		//find existing entry
 		for(var i=0; i < lines.length; i++) {
 			if(lines[i] != "") {
-				if(lines[i].split(",")[0] !== undefined && lines[i].split(",")[0] != "hexcolor") {
+				if(lines[i].split(",")[0] !== undefined && lines[i].split(",")[0] != "hexcolor" && lines[i].split(",")[0] != "althexcolor"&& lines[i].split(",")[0] != "texthexcolor") {
 					//alert(lines[i].split(",")[0] + "," + currentFilename);
 					if(currentFilename == lines[i].split(",")[0]) {
 						$('time-currentPF').innerText = lines[i].split(",")[1];
