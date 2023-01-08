@@ -96,33 +96,59 @@ var interface = new CSInterface();
 		});
 		
 	});
-	
-
-	//block ae from using ALL keys while this window is active
-	//keyRegisterOverride();
-
-	// alert(path.slice(60, path.length));
-
-	//can run a given function in aftereffects.jsx
-	// interface.evalScript('testFunction()', function(res) {
-	// 	//anon function to do whatever you want with the result from the test function
-	// 	alert("anon func");
-	// });
-
-	//wait 2000 ms THEN run the stuff inside
-	// setTimeout(function() {
-	// 	//the stuff inside
-	// }, 2000);
-
 }());
 
-//if checkbox not checked gray out/disable keybinds
-var nodes;
+//when html opens check for changed theme; if changed go change it
+function applyChangedTheme() {
+	//go find the changed theme
+	//read existing files contents
+	var color = null;
+	fs.readFile(statsFilePath, (error, data) => {
+		if(error) { throw error; }
 
-function statsClick() {
-	//alert("stats click");
-	interface.requestOpenExtension("com.ahr.stattracker.stats.panel");
+		var lines = data.toString().split("\n");
+		//find existing entry if exists
+		for(var i=0; i < lines.length; i++) {
+			//alert("line: " + i + ": " + lines[i] + "\n" + lines[i].split(",")[0]);
+			if("hexcolor" == lines[i].split(",")[0]) {
+				color = lines[i].split(",")[1];
+			}
+		}
+
+		
+		//change the proper stuff to change if color isnt null
+		if(color != null) {
+			//alert(e.target.value);
+			//change color of things
+			document.body.style.backgroundColor = color;
+			
+			nodes = document.querySelectorAll("input[type=text]");
+			for (var i=0; i<nodes.length; i++) {
+				nodes[i].style.backgroundColor = color;
+			}
+			nodes = document.querySelectorAll("button");
+			for (var i=0; i<nodes.length; i++) {
+				nodes[i].style.backgroundColor = color;
+			}
+
+			nodes = document.getElementsByClassName('container');
+			for (var i=0; i<nodes.length; i++) {
+				//document.getElementsByClassName('container')[i].childNodes[3].style.backgroundColor = color;
+				if(!document.getElementsByClassName('container')[i].childNodes[1].checked) {
+					document.getElementsByClassName('container')[i].childNodes[3].style.backgroundColor = color;
+				} else {
+					document.getElementsByClassName('container')[i].childNodes[3].style.backgroundColor = "#D7D7D7";
+				}
+			}
+
+			$('color-picker').style.backgroundColor = color;
+			$('color-picker').value = color;
+			$('color-picker').jscolor.fromString(color);
+		}
+	});
 }
+applyChangedTheme();
+
 
 function getOS() {
 	var userAgent = window.navigator.userAgent,
@@ -164,6 +190,7 @@ function readTimer() {
 		}
 
 		$('time-total').innerText = total;
+		setTimeout(readTimer, 1000);
 	});
 }
 
