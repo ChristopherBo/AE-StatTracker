@@ -28,7 +28,7 @@
 			// Here we can adjust defaults for all color pickers on page:
 			jscolor.presets.default = {
 				palette: [
-					'#232323', '#7d7d7d', '#870014', '#ec1c23', '#ff7e26', '#fef100', '#22b14b', '#00a1e7', '#3f47cc', '#a349a4',
+					'#232323', '#454545', '#D7D7D7', '#ec1c23', '#ff7e26', '#fef100', '#22b14b', '#00a1e7', '#3f47cc', '#a349a4',
 					'#ffffff', '#c3c3c3', '#b87957', '#feaec9', '#ffc80d', '#eee3af', '#b5e61d', '#99d9ea', '#7092be', '#c8bfe7',
 				],
 				//paletteCols: 12,
@@ -49,11 +49,13 @@
 	</ul>
 	<hr>
 	<div id="preferencesSection">
+		<p>Some changes may require closing and reopening the extension to work.</p>
+		<p>To reset colors to defaults, open stats.txt in your Documents folder and delete the lines containing hexcolor, althexcolor, and texthexcolor.</p>
 		Color: <input value="#232323" id="color-picker" name="color1" onchange="changeTheme(event)" data-jscolor="{value:'#232323'}" style="width: 70px; border-radius:5px; border-style:solid; border-width: 1px; margin-bottom:3px;">
 		<br>
-		Alt Color: <input value="#232323" id="color-picker-alt" name="color2" onchange="changeAltTheme(event)" data-jscolor="{value:'#232323'}" style="width: 70px; border-radius:5px; border-style:solid; border-width: 1px; margin-bottom:3px;">
+		Alt Color: <input value="#454545" id="color-picker-alt" name="color2" onchange="changeAltTheme(event)" data-jscolor="{value:'#232323'}" style="width: 70px; border-radius:5px; border-style:solid; border-width: 1px; margin-bottom:3px;">
 		<br>
-		Text Color: <input value="#232323" id="color-picker-text" name="color3" onchange="changeTextTheme(event)" data-jscolor="{value:'#232323'}" style="width: 70px; border-radius:5px; border-style:solid; border-width: 1px; margin-bottom:3px;">
+		Text Color: <input value="#D7D7D7" id="color-picker-text" name="color3" onchange="changeTextTheme(event)" data-jscolor="{value:'#232323'}" style="width: 70px; border-radius:5px; border-style:solid; border-width: 1px; margin-bottom:3px;">
 		<p>Suggest things I should add here for future versions @ AHRevolvers#1984!</p></div>
 	<script>
 
