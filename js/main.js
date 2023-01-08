@@ -70,29 +70,84 @@ function toggleBinds(e) {
 
 //listen for color theme changing
 function changeTheme(e) {
-	//alert(e.target.value);
-	//change color of bgnd text boxes
-	nodes = document.querySelectorAll("input[type=text]");
-	for (var i=0; i<nodes.length; i++) {
-		nodes[i].style.backgroundColor = e.target.value;
-	}
-	nodes = document.querySelectorAll("button");
-	for (var i=0; i<nodes.length; i++) {
-		nodes[i].style.backgroundColor = e.target.value;
-	}
+	//save the theme into stats.txt
+	//if it DNE add it; if it exists replace it
+	var foundFile = false;
+	fs.readFile(statsFilePath, (error, data) => {
+		if(error) { throw error; }
 
-	nodes = document.getElementsByClassName('container');
-	for (var i=0; i<nodes.length; i++) {
-		//document.getElementsByClassName('container')[i].childNodes[3].style.backgroundColor = e.target.value;
-		if(!document.getElementsByClassName('container')[i].childNodes[1].checked) {
-			document.getElementsByClassName('container')[i].childNodes[3].style.backgroundColor = e.target.value;
-		} else {
-			document.getElementsByClassName('container')[i].childNodes[3].style.backgroundColor = "#D7D7D7";
+		var lines = data.toString().split("\n");
+		//find existing entry if exists
+		for(var i=0; i < lines.length; i++) {
+			if("hexcolor" == lines[i].split(",")[0]) {
+				//it exists, replace it
+				foundFile = true;
+				fs.writeFile(statsFilePath, data.toString().replace(new RegExp(`hexcolor,.*`, 'g'), "hexcolor," + e.target.value), err => {
+					if (err) { alert(err); return; }
+				});
+			}
 		}
-	}
 
-	$('color-picker').style.backgroundColor = e.target.value;
+		//dne, add it
+		if(foundFile == false) {
+			fs.appendFile(statsFilePath, "hexcolor," + e.target.value + "\n", err => {
+				if (err) { alert(err); return; }
+			});
+		}
+	});
+	applyChangedTheme();
 }
+
+//when html opens check for changed theme; if changed go change it
+function applyChangedTheme() {
+	//go find the changed theme
+	//read existing files contents
+	var color = null;
+	fs.readFile(statsFilePath, (error, data) => {
+		if(error) { throw error; }
+
+		var lines = data.toString().split("\n");
+		//find existing entry if exists
+		for(var i=0; i < lines.length; i++) {
+			//alert("line: " + i + ": " + lines[i] + "\n" + lines[i].split(",")[0]);
+			if("hexcolor" == lines[i].split(",")[0]) {
+				color = lines[i].split(",")[1];
+			}
+		}
+
+		
+		//change the proper stuff to change if color isnt null
+		if(color != null) {
+			//alert(e.target.value);
+			//change color of things
+			document.body.style.backgroundColor = color;
+			
+			nodes = document.querySelectorAll("input[type=text]");
+			for (var i=0; i<nodes.length; i++) {
+				nodes[i].style.backgroundColor = color;
+			}
+			nodes = document.querySelectorAll("button");
+			for (var i=0; i<nodes.length; i++) {
+				nodes[i].style.backgroundColor = color;
+			}
+
+			nodes = document.getElementsByClassName('container');
+			for (var i=0; i<nodes.length; i++) {
+				//document.getElementsByClassName('container')[i].childNodes[3].style.backgroundColor = color;
+				if(!document.getElementsByClassName('container')[i].childNodes[1].checked) {
+					document.getElementsByClassName('container')[i].childNodes[3].style.backgroundColor = color;
+				} else {
+					document.getElementsByClassName('container')[i].childNodes[3].style.backgroundColor = "#D7D7D7";
+				}
+			}
+
+			$('color-picker').style.backgroundColor = color;
+			$('color-picker').value = color;
+			$('color-picker').jscolor.fromString(color);
+		}
+	});
+}
+applyChangedTheme();
 
 //check if checkbox checked or unchecked to make sure its being the right color
 function toggleCheckbox(e) {
