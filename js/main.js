@@ -223,10 +223,6 @@ function applyChangedTheme() {
 			// for (var i=0; i<nodes.length; i++) {
 			// 	nodes[i].style.backgroundColor = color;
 			// }
-			// nodes = document.querySelectorAll("button");
-			// for (var i=0; i<nodes.length; i++) {
-			// 	nodes[i].style.backgroundColor = color;
-			// }
 
 			// nodes = document.getElementsByClassName('container');
 			// for (var i=0; i<nodes.length; i++) {
@@ -278,6 +274,10 @@ function applyChangedTheme() {
 				}
 				$('color-picker-alt').jscolor.fromString(altcolor);
 			} catch(e) {}
+
+			try {
+				document.getElementById('stats-button').style.backgroundColor = altcolor;
+			} catch(e) {}
 		}
 
 		if(textcolor != "") {
@@ -304,6 +304,10 @@ function applyChangedTheme() {
 				for(var i=0; i < topp.length; i++) {
 					topp[i].style.color = textcolor;
 				}
+			} catch(e) {}
+
+			try {
+				document.getElementById('stats-button').style.color = textcolor;
 			} catch(e) {}
 		}
 	});
