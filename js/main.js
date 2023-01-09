@@ -210,7 +210,6 @@ function applyChangedTheme() {
 		}
 	});
 }
-applyChangedTheme();
 
 function applyChangedColorTheme(color) {
 	document.body.style.backgroundColor = color;
@@ -356,14 +355,6 @@ function setTimer() {
 	});
 	incrementTimer();
 }
-getCurrentFilename();
-
-//only do stopwatch stuff if we're on the main page
-try {
-	if(document.getElementById('stats-button').innerHTML == 'Stats') {
-		setTimeout(setTimer, 1000);
-	}
-} catch(e) {}
 
 //increment the timer every second
 function incrementTimer() {
@@ -509,3 +500,12 @@ function getCurrentFilename() {
 	});
 	setTimeout(getCurrentFilename, 1000);
 }
+
+getCurrentFilename();
+applyChangedTheme();
+//only do stopwatch stuff if we're on the main page
+try {
+	if(document.getElementById('stats-button').innerHTML == 'Stats') {
+		setTimeout(setTimer, 1000);
+	}
+} catch(e) {}
