@@ -86,10 +86,10 @@ function changeTheme(e) {
 		var lines = data.toString().split("\n");
 		//find existing entry if exists
 		for(var i=0; i < lines.length; i++) {
-			if("hexcolor" == lines[i].split(",")[0]) {
+			if("mainhexcolor" == lines[i].split(",")[0]) {
 				//it exists, replace it
 				foundFile = true;
-				fs.writeFile(statsFilePath, data.toString().replace(new RegExp(`\nhexcolor,.*`, 'g'), "\nhexcolor," + e.target.value), err => {
+				fs.writeFile(statsFilePath, data.toString().replace(new RegExp(`mainhexcolor,.*`, 'g'), "mainhexcolor," + e.target.value), err => {
 					if (err) { alert(err); return; }
 				});
 			}
@@ -97,7 +97,7 @@ function changeTheme(e) {
 
 		//dne, add it
 		if(foundFile == false) {
-			fs.appendFile(statsFilePath, "hexcolor," + e.target.value + "\n", err => {
+			fs.appendFile(statsFilePath, "mainhexcolor," + e.target.value + "\n", err => {
 				if (err) { alert(err); return; }
 			});
 		}
@@ -183,9 +183,9 @@ function applyChangedTheme() {
 		//find existing entry if exists
 		for(var i=0; i < lines.length; i++) {
 			//alert("line: " + i + ": " + lines[i] + "\n" + lines[i].split(",")[0]);
-			if("hexcolor" == lines[i].split(",")[0]) {
+			if("mainhexcolor" == lines[i].split(",")[0]) {
 				color = lines[i].split(",")[1];
-				//alert("hexcolor found: " + color);
+				//alert("mainhexcolor found: " + color);
 			} else if("althexcolor" == lines[i].split(",")[0]) {
 				altcolor = lines[i].split(",")[1];
 				//alert("althexcolor found: " + altcolor);

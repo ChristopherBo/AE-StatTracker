@@ -119,9 +119,9 @@ function applyChangedTheme() {
 		//find existing entry if exists
 		for(var i=0; i < lines.length; i++) {
 			//alert("line: " + i + ": " + lines[i] + "\n" + lines[i].split(",")[0]);
-			if("hexcolor" == lines[i].split(",")[0]) {
+			if("mainhexcolor" == lines[i].split(",")[0]) {
 				color = lines[i].split(",")[1];
-				//alert("hexcolor found: " + color);
+				//alert("mainhexcolor found: " + color);
 			} else if("althexcolor" == lines[i].split(",")[0]) {
 				altcolor = lines[i].split(",")[1];
 				//alert("althexcolor found: " + altcolor);
@@ -255,7 +255,7 @@ function readTimer() {
 		//find existing entry
 		for(var i=0; i < lines.length; i++) {
 			if(lines[i] != "") {
-				if(lines[i].split(",")[0] !== undefined && lines[i].split(",")[0] != "hexcolor" && lines[i].split(",")[0] != "althexcolor"&& lines[i].split(",")[0] != "texthexcolor") {
+				if(lines[i].split(",")[0] !== undefined && lines[i].split(",")[0] != "mainhexcolor" && lines[i].split(",")[0] != "althexcolor"&& lines[i].split(",")[0] != "texthexcolor") {
 					//alert(lines[i].split(",")[0] + "," + currentFilename);
 					if(currentFilename == lines[i].split(",")[0]) {
 						$('time-currentPF').innerText = lines[i].split(",")[1];
