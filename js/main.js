@@ -393,7 +393,7 @@ function incrementTimer() {
 	
 	//return
 	var res = hours.toString() + ":" + minutes.toString() + ":" + seconds.toString();
-	$('stopwatch').innerText = res;
+	//$('stopwatch').innerText = res;
 	saveTimer(res);
 	setTimeout(incrementTimer, 1000);
 }
@@ -433,14 +433,14 @@ function saveTimer(timer) {
 	try {
 		if (!fs.existsSync(statsFilePath)) {
 			fs.open(statsFilePath, 'w', function (err, file) {
-				if (err) throw err;
+				if (err) { alert(err); return; }
 			});
 		}
 	} catch(err) {}
 
 	//read existing files contents
 	fs.readFile(statsFilePath, (error, data) => {
-		if(error) { throw error; }
+		if (error) { alert(err); return; }
 
 		var lines = data.toString().split("\n");
 		var foundFile = false;
@@ -454,6 +454,7 @@ function saveTimer(timer) {
 				//if for some reason it's NaN:NaN:NaN kill everything and redo it
 				if(time == "NaN:NaN:NaN") {
 					$('stopwatch').innerText = "0:00:00";
+					// alert("NaNs!: " + currentFilename + ",00:00:00");
 					fs.writeFile(statsFilePath, data.toString().replace(new RegExp(`${currentFilename},.*`, 'g'), currentFilename + ",00:00:00"), err => {
 						if (err) { alert(err); return; }
 					});
@@ -464,6 +465,7 @@ function saveTimer(timer) {
 						$('stopwatch').innerText = incrementedTime;
 						timer = incrementedTime;
 					}
+					//alert("everythings good: " + currentFilename + "," + timer);
 					fs.writeFile(statsFilePath, data.toString().replace(new RegExp(`${currentFilename},.*`, 'g'), currentFilename + "," + timer), err => {
 						if (err) { alert(err); return; }
 					});
@@ -474,9 +476,16 @@ function saveTimer(timer) {
 		//if not found create entry for it
 		if(foundFile == false && currentFilename !== null) {
 			$('stopwatch').innerText = "0:00:00";
-			fs.appendFile(statsFilePath, currentFilename + "," + timer + "\n", err => {
+			// alert("foundfile false, currentfilename not null");
+			fs.appendFile(statsFilePath, currentFilename + ",00:00:00\n", err => {
 				if (err) { alert(err); return; }
 			});
+		}
+
+		//if the current filename == null then wait another second and try again
+		if(foundFile == false && currentFilename == null) {
+			// alert("trying in another second...");
+			setTimeout(saveTimer, 1000);
 		}
 	});
 }
