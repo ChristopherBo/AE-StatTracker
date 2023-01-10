@@ -438,15 +438,16 @@ function saveTimer(timer) {
 		//find existing entry
 		for(var i=0; i < lines.length; i++) {
 			//currentFilename = getCurrentFilename(); //ie script testing.aep
-			if(currentFilename == lines[i].split(",")[0] && currentFilename !== null) {
+			if(currentFilename == lines[i].split(",")[0] && currentFilename !== null && currentFilename != "") {
 				foundFile = true;
 				var time = lines[i].split(",")[1];
+				var regexFilename = currentFilename.replace("(", "\\(").replace(")", "\\)").replace("[", "\\[").replace("]", "\\]").replace("$", "\\$").replace("^", "\\^").replace("?", "\\?");
 				
 				//if for some reason it's NaN:NaN:NaN kill everything and redo it
-				if(time == "NaN:NaN:NaN") {
+				if(time == "NaN:NaN:NaN" || time == undefined) {
 					$('stopwatch').innerText = "0:00:00";
-					// alert("NaNs!: " + currentFilename + ",00:00:00");
-					fs.writeFile(statsFilePath, data.toString().replace(new RegExp(`${currentFilename},.*`, 'g'), currentFilename + ",00:00:00"), err => {
+					//alert("NaNs!: " + currentFilename + ",0:00:00");
+					fs.writeFile(statsFilePath, data.toString().replace(new RegExp(`${regexFilename}{1},.*`, 'g'), currentFilename + ",0:00:00"), err => {
 						if (err) { alert(err); return; }
 					});
 				} else {
@@ -456,8 +457,10 @@ function saveTimer(timer) {
 						$('stopwatch').innerText = incrementedTime;
 						timer = incrementedTime;
 					}
-					//alert("everythings good: " + currentFilename + "," + timer);
-					fs.writeFile(statsFilePath, data.toString().replace(new RegExp(`${currentFilename},.*`, 'g'), currentFilename + "," + timer), err => {
+					var regex = new RegExp(`${regexFilename}{1},.*`, 'g');
+					//alert(regexFilename + " " + lines[i] + " " + regex + " " + regex.test(lines[i]));
+					//alert("everything's good: " + currentFilename + "," + timer);
+					fs.writeFile(statsFilePath, data.toString().replace(new RegExp(`${regexFilename}{1},.*`, 'g'), currentFilename + "," + timer), err => {
 						if (err) { alert(err); return; }
 					});
 				}
@@ -468,14 +471,14 @@ function saveTimer(timer) {
 		if(foundFile == false && currentFilename !== null) {
 			$('stopwatch').innerText = "0:00:00";
 			// alert("foundfile false, currentfilename not null");
-			fs.appendFile(statsFilePath, currentFilename + ",00:00:00\n", err => {
+			fs.appendFile(statsFilePath, currentFilename + ",0:00:00\n", err => {
 				if (err) { alert(err); return; }
 			});
 		}
 
 		//if the current filename == null then wait another second and try again
 		if(foundFile == false && currentFilename == null) {
-			// alert("trying in another second...");
+			//alert("trying in another second...");
 			setTimeout(saveTimer, 1000);
 		}
 	});
@@ -499,6 +502,10 @@ function getCurrentFilename() {
 		}
 	});
 	setTimeout(getCurrentFilename, 1000);
+}
+
+function sleep(ms) {
+	return new Promise(resolve => setTimeout(resolve, ms));
 }
 
 getCurrentFilename();
