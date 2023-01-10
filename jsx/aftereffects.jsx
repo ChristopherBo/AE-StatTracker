@@ -48,6 +48,10 @@ function getCurrentFilename() {
     if(baseChecks != true) {
         return false;
     }
+    //if for some reason this isn't saved we should save it with untitled
+    if(app.project.file == null) {
+        return "untitled";
+    }
     //alert(new File($.fileName).name);
     return File.decode(app.project.file.name);
 }
