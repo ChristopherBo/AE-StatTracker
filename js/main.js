@@ -510,9 +510,9 @@ function sleep(ms) {
 
 getCurrentFilename();
 applyChangedTheme();
-//only do stopwatch stuff if we're on the main page
-try {
-	if(document.getElementById('stats-button').innerHTML == 'Stats') {
-		setTimeout(setTimer, 1000);
-	}
-} catch(e) {}
+// //only do stopwatch stuff if we're on the main page
+// try {
+// 	if(document.getElementById('stats-button').innerHTML == 'Stats') {
+setTimeout(setTimer, 1000);
+// 	}
+// } catch(e) {}
